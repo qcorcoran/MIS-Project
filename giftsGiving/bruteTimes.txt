@@ -1,0 +1,9 @@
+n=17 time=0.0685965sec
+n=17 time=0.00898568sec
+n=17 time=0.00895318sec
+n=17 time=0.00905045sec
+n=17 time=0.00890699sec
+n=17 time=0.00907823sec
+n=17 time=0.00899207sec
+n=17 time=0.00905079sec
+n=17 time=0.00909985sec
