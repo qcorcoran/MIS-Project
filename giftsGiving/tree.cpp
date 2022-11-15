@@ -18,15 +18,13 @@ tree::~tree(){
 void tree::readData(){
     //declare local variables
     string input = "";
-    int intendedSize = 0;
     int parent = 0;
     int child = 0;
 
     //read first line of input should be number of nodes
     cin>>input;
     istringstream issn(input);
-    issn >> intendedSize;
-    n = intendedSize;
+    issn >> n;
 
     //dynamic array allocation
     mis = new int[n];
@@ -41,7 +39,7 @@ void tree::readData(){
     nodes[0] = saved;
 
     //read the rest of the input
-    while(size < intendedSize){
+    while(size < n){
         //set parent as first number and child as second number
         cin>>input;
         istringstream issp(input);

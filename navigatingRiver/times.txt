@@ -1,0 +1,11 @@
+n=6 time=8.0746e-05sec
+n=6 time=6.7048e-05sec
+n=6 time=9.2266e-05sec
+n=6 time=9.3254e-05sec
+n=6 time=9.2006e-05sec
+n=6 time=8.9633e-05sec
+n=20 time=0.000122167sec
+n=10 time=9.5233e-05sec
+n=50 time=0.000242786sec
+n=40 time=0.00020221sec
+n=36 time=0.000178792sec

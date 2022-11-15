@@ -18,7 +18,6 @@ trapezoidGraph::~trapezoidGraph(){
 void trapezoidGraph::readData(){
     //declare local variables
     string input = "";
-    int intendedSize = 0;
     //trapezoid attributes
     int ui = 0;
     int vi = 0;
@@ -29,15 +28,14 @@ void trapezoidGraph::readData(){
     //read first line of input should be number of trapezoids
     cin>>input;
     istringstream issn(input);
-    issn >> intendedSize;
-    n = intendedSize;
+    issn >> n;
 
     //dynamic array allocation
     trapezoids = new trapezoid*[n*2];
     boxes = new point*[n*2];
 
     //read the rest of the file
-    while (size < intendedSize){
+    while (size < n){
         //set u as first number, v as second number, w as the third number, and z as the fourth number
         cin>>input;
         istringstream issu(input);

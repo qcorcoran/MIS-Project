@@ -16,7 +16,6 @@ permutationGraph::~permutationGraph(){
 void permutationGraph::readData(){
     //declare local variables
     string input = "";
-    int intendedSize = 0;
     //permutation attributes
     int p = 0;
     int i = 1;
@@ -24,14 +23,13 @@ void permutationGraph::readData(){
     //read first line of input should be number of permutations
     cin>>input;
     istringstream issn(input);
-    issn >> intendedSize;
-    n = intendedSize;
+    issn >> n;
 
     //dynamic array allocation
     permutations = new permutation*[n];
 
     //read the rest of the file
-    while (size < intendedSize){
+    while (size < n){
         //set p based on the number on that line
         cin>>input;
         istringstream issp(input);

@@ -10,6 +10,7 @@ using namespace std;
 
 class circularArcGraph{
 	private:
+        int n;
         int xc;
         int yc;
         int radius;
@@ -17,7 +18,7 @@ class circularArcGraph{
         int size;
 		int mimSize;
 	public:
-		circularArcGraph() {size = 0; mimSize = 0;} //Start with an empty graph
+		circularArcGraph() {n = 0; size = 0; mimSize = 0;} //Start with an empty graph
 		void readData(); //reads in data from a text file and creates the arcs
         void intersection(arc* ark); //sets the intersection points of an arc using the quadratic formula
         void mergesort(int start, int end, string sortType);

@@ -8,7 +8,6 @@ using namespace std;
 void circularArcGraph::readData(){
     //declare local variables
     string input = "";
-    int intendedSize = 0;
     stringstream ssi;
     //line attributes
     int a = 0;
@@ -19,7 +18,7 @@ void circularArcGraph::readData(){
     //read first line of input should be number of nodes followed by the center cordinates and the radius
     cin>>input;
     istringstream issn(input);
-    issn >> intendedSize;
+    issn >> n;
     cin>>input;
     istringstream issx(input);
     issx >> xc;
@@ -31,10 +30,10 @@ void circularArcGraph::readData(){
     issr >> radius;
 
     //dynamic array allocation
-    arcs = new arc*[intendedSize];
+    arcs = new arc*[n];
 
     //read the rest of the file
-    while (size < intendedSize){
+    while (size < n){
         //set a as first number b as second number, and c as the third number
         cin>>input;
         istringstream issa(input);

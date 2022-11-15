@@ -17,21 +17,19 @@ intervalGraph::~intervalGraph(){
 void intervalGraph::readData(){
     //declare local variables
     string input = "";
-    int intendedSize = 0;
     int start = 0;
     int end = 0;
     
     //read first line of input should be number of nodes
     cin>>input;
     istringstream issn(input);
-    issn >> intendedSize;
-    n = intendedSize;
+    issn >> n;
 
     //dynamic array allocation
     intervals = new interval*[n];
 
     //read the rest of the input
-    while(size < intendedSize){
+    while(size < n){
         //set startPoint as first number and endPoint as second number
         cin>>input;
         istringstream isss(input);
