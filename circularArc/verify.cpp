@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//circularArc
 
 #include <iostream>
 #include <cstring>

@@ -10,16 +10,16 @@ CFLAGS = -c -g -Wall
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
 
-all: main.o graph.o verify.o
-	$(CC) -o circularArc main.o graph.o
+all: main.o circularArcGraph.o verify.o
+	$(CC) -o circularArc main.o circularArcGraph.o
 	$(CC) -o verify verify.o
 
-circularArc: main.o graph.o
-	$(CC) -o circularArc main.o graph.o
+circularArc: main.o circularArcGraph.o
+	$(CC) -o circularArc main.o circularArcGraph.o
 
 main.o: main.cpp
 
-graph.o: graph.cpp
+circularArcGraph.o: circularArcGraph.cpp
 
 verify: verify.o
 	$(CC) -o verify verify.o

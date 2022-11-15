@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//permutation
 
 #include <iostream>
 #include <cstring>
@@ -19,23 +20,24 @@ int main(int argc, char** argv){
     string infile = "input.txt";
     ifstream myfile;
     int permutations = 0;
-    int sets = 0;
-    int remain = 0;
-    int randomAdd = 0;
-    int pMin = 1;
-    int pMax = 0;
+    int lis = 0;
+    int lisStart = 0;
     int p = 0;
+    int prevP = 0;
 
     //initialize random seed
     srand(time(NULL));
 
     //prompt user for input
+    /*
     cout<<"Enter name of input file to create: ";
     cin>>infile;
     cout<<"Enter name of answer file to create: ";
     cin>>ansfile;
     cout<<"Enter number of permutations to create: ";
     cin>>permutations;
+    */
+    permutations = 15;
 
     //create and open input file
     ofstream iFile(infile.c_str());
@@ -45,49 +47,42 @@ int main(int argc, char** argv){
 
     //set a random number of sets of overlapping permutations
     //the MIS will be equal to the number of sets
-    sets = (rand() % permutations) + 1;
+    lis = (rand() % permutations) + 1;
+    lisStart = (rand() % (permutations-lis)) + 1;
 
-    //keep track of the permutations that need to be added to a set
-    remain = permutations;
-    //array of the number of permutations in each set
-    int numberPerSet[sets];
+    cout<<lis<<" "<<lisStart<<endl;
 
-    //initialize sets array with one permutation per set
-    for(int i=0; i < sets; i++){
-        numberPerSet[i] = 1;
-        remain--;
-    }
-
-    //add a random number of permutations to each set until there are no more permutations left
-    while(remain > 0){
-        for(int i=0; i < sets; i++){
-            //dividing by the number of sets makes it more likely that each set will be added to
-            randomAdd = (rand() % remain/sets);
-            if(randomAdd == 0){
-                randomAdd++;
-            }
-            numberPerSet[i] += randomAdd;
-            remain -= randomAdd;
-            if(remain == 0){
-                break;
-            }
-        }
-    } 
-
-    //create the given number of permutations
-    for(int i=0; i < sets; i++){
-        //set the bounds of the set
-        pMax = numberPerSet[i] + pMin - 1;
-        for(int j=0; j < numberPerSet[i]; j++){
-            p = pMax;
-            assert(p >= pMin);
-            assert(p <= pMax);
-            pMax = p-1;
-            //write the permutations to the input file
+    int i = 0;
+    prevP = 1000000;
+    while(i < permutations){
+        if(i == lisStart-1){
+            cout<<"if "<<i<<endl;
+            p = (rand() % (prevP-1)) + 1;
+            cout<<"p "<<p<<" prevp "<<prevP<<endl;
+            assert(p < prevP);
+            prevP = p;
             iFile << p << "\n";
+            i++;
+            for(int j=1; j < lis; j++){
+                cout<<"for "<<i<<endl;
+                p = (rand() % 1000000) + prevP + 1;
+                assert(p > prevP);
+                cout<<"p "<<p<<" prevp "<<prevP<<endl;
+                prevP = p;
+                iFile << p << "\n";
+                i++;    
+            }
         }
-        pMin = pMax + 1;
+        if(i >= permutations){
+            break;
+        }
+        p = (rand() % prevP-1) + 1;
+        assert(p < prevP);
+        prevP = p;
+        iFile << p << "\n";
+        i++;
     }
+    
 
     //close the input file
     iFile.close();
@@ -96,7 +91,7 @@ int main(int argc, char** argv){
     ofstream aFile(ansfile.c_str());
 
     //write the solution to the answer file
-    aFile << sets << "\n";
+    aFile << lis << "\n";
 
     //close the answer file
     aFile.close();

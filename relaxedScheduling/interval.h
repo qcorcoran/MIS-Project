@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//relaxedScheduling
 
 #ifndef interval_H
 #define interval_H
@@ -20,7 +21,7 @@ class interval{
 		int endPoint;
 	public:
 		interval(int s, int e) {startPoint = s; endPoint = e;}
-	friend class graph;
+	friend class intervalGraph;
 };
 
 #endif /* interval_H */

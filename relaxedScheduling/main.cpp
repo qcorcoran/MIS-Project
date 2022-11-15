@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//relaxedScheduling
 
 #include <iostream>
 #include <cstring>
@@ -7,7 +8,7 @@
 #include <cstdlib>
 #include <string>
 #include <time.h>
-#include "graph.h"
+#include "intervalGraph.h"
 #include "interval.h"
 
 using namespace std;
@@ -17,7 +18,7 @@ int main(int argc, char** argv){
     struct timespec startTime, endTime; 
 	
 	//make graph object
-	graph* g = new graph();
+	intervalGraph* g = new intervalGraph();
 
     //read from the input file
     g->readData();
@@ -43,6 +44,9 @@ int main(int argc, char** argv){
 
     //output the final result
     cout<<g->getMisSize()<<endl;
+
+    //deallocate the graph
+    delete g;
 
     return 0;
 }

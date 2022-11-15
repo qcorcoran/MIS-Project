@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//giftsGiving
 
 #ifndef tree_H
 #define tree_H
@@ -9,16 +10,18 @@ using namespace std;
 
 class tree{
 	private:
+		int n;
 		node* root;
 		int size;
-		int mis[1000000];
+		int* mis; //this is an array
 		int misSize;
-		node* nodes[1000000];
+		node** nodes; //this is an array
 		node* saved;
-		node* brute[1000000];
+		node** brute; //this is an array
 		int bruteSize;
 	public:
-		tree() {root = NULL; size = 0; misSize = 0; bruteSize = 0;} //Start with an empty tree
+		tree() {n = 0; root = NULL; size = 0; misSize = 0; bruteSize = 0;} //Start with an empty tree
+		~tree();
 		void readData();
 		void insert(int parentLable, int childLable, node* curNode);
 		void trim(node* leaf);

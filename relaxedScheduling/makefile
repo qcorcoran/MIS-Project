@@ -10,17 +10,17 @@ CFLAGS = -c -g -Wall
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
 
-all: main.o graph.o inputMaker.o verify.o
-	$(CC) -o relaxedScheduling main.o graph.o
+all: main.o intervalGraph.o inputMaker.o verify.o
+	$(CC) -o relaxedScheduling main.o intervalGraph.o
 	$(CC) -o inputMaker inputMaker.o
 	$(CC) -o verify verify.o
 
-relaxedScheduling: main.o graph.o
-	$(CC) -o relaxedScheduling main.o graph.o
+relaxedScheduling: main.o intervalGraph.o
+	$(CC) -o relaxedScheduling main.o intervalGraph.o
 
 main.o: main.cpp
 
-graph.o: graph.cpp
+intervalGraph.o: intervalGraph.cpp
 
 inputMaker: inputMaker.o
 	$(CC) -o inputMaker inputMaker.o

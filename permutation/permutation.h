@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//permutation
 
 #ifndef permutation_H
 #define permutation_H
@@ -26,7 +27,7 @@ class permutation{
         permutation(int n, int pv) {lineNum = n; pValue = pv; lis = 1; lisMax = 1;}
         int getPvalue() {return pValue;}
 
-    friend class graph;
+    friend class permutationGraph;
 	friend class splayTree;
 };
 

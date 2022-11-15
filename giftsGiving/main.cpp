@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//giftsGiving
 
 #include <iostream>
 #include <cstring>
@@ -47,6 +48,9 @@ int main(int argc, char** argv){
         cout<<t->getMis(i)<<" ";
     }
     cout<<"\n";
+
+    //free up memory
+    delete t;
 
     return 0;
 }

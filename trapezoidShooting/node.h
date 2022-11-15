@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//trapezoidShooting
 
 #ifndef node_H
 #define node_H

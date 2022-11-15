@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//circularArc
 
 #ifndef arc_H
 #define arc_H
@@ -47,7 +48,7 @@ class arc{
 		double getStartTheta() {return startTheta;}
 		double getEndTheta() {return endTheta;}
 		arc* getNext() {return next;}
-	friend class graph;
+	friend class circularArcGraph;
 };
 
 #endif /* arc_H */

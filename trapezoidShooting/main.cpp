@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//trapezoidShooting
 
 #include <iostream>
 #include <cstring>
@@ -7,7 +8,7 @@
 #include <cstdlib>
 #include <string>
 #include <time.h>
-#include "graph.h"
+#include "trapezoidGraph.h"
 #include "trapezoid.h"
 #include "point.h"
 #include "splayTree.h"
@@ -19,7 +20,7 @@ int main(int argc, char** argv){
     struct timespec startTime, endTime;
 
 	//make the graph object
-	graph* g = new graph();
+	trapezoidGraph* g = new trapezoidGraph();
 
     //read in data from the file
     g->readData();
@@ -29,7 +30,7 @@ int main(int argc, char** argv){
     g->mergesort(0, g->getBoxesSize()-1);
 
     //runs the sweepline across the box representation
-    g->sweepLine();        
+    g->sweepLine();
     
     //timing ends here
     clock_gettime(CLOCK_REALTIME, &endTime);
@@ -46,6 +47,8 @@ int main(int argc, char** argv){
 
     //output final result
     cout<<g->getMisSize()<<endl;
+
+    delete g;
 
     return 0;
 }

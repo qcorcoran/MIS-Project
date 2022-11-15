@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//relaxedScheduling
 
 #include <iostream>
 #include <cstring>
@@ -64,7 +65,7 @@ int main(int argc, char** argv){
             range = (currentEndpoint-1) - (currentStartpoint+1) + 1;
             start = (rand() % range) + (currentStartpoint+1);
             //set end to be greater than currentEndpoint
-            end = (rand() % 32767) + (currentEndpoint+1);
+            end = (rand() % RANDMAX) + (currentEndpoint+1);
             //write the nonMIS interval to the input file
             iFile << start << " " << end << "\n";
             //asserts for correctness

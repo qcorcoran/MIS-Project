@@ -18,3 +18,11 @@ n=20 time=6.247e-06sec
 n=10 time=3.097e-06sec
 n=10 time=3.14e-06sec
 n=1000000 time=0.37407sec
+n=1000 time=0.000389201sec
+n=10000 time=0.00461569sec
+n=1000000 time=0.437835sec
+n=8 time=5.369e-06sec
+n=1000000 time=0.446479sec
+n=8 time=5.507e-06sec
+n=1000000 time=0.912855sec
+n=8 time=0.0137982sec

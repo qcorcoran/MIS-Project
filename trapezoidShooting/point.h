@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//trapezoidShooting
 
 #ifndef point_H
 #define point_H

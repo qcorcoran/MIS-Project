@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//trapezoidShooting
 
 #include <iostream>
 #include <cstring>

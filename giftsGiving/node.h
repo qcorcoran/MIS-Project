@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//giftsGiving
 
 #ifndef node_H
 #define node_H
@@ -17,13 +18,15 @@ using namespace std;
 
 class node{
 	private:
-		int lable;
+		int label;
+		int maxNodes;
 		int numChildren;
 		int mark;
-		node* children[1000000];
+		node** children; //this is an array
 		node* parent;
 	public:
-		node(int l) {lable = l; numChildren = 0; mark = 1; parent = NULL;}
+		node(int l, int n) {label = l; maxNodes = n; numChildren = 0; mark = 1; parent = NULL; children = new node*[n];}
+		~node() {delete[] children;}
 		void addChild(node* n) {children[numChildren] = n; numChildren++;}
 		void setParent(node* n) {parent = n;}
 		void kill() {mark = 0;}

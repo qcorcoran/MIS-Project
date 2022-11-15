@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//circularArc
 
 #include <iostream>
 #include <cstring>
@@ -7,7 +8,7 @@
 #include <cstdlib>
 #include <string>
 #include <time.h>
-#include "graph.h"
+#include "circularArcGraph.h"
 #include "arc.h"
 
 using namespace std;
@@ -17,7 +18,7 @@ int main(int argc, char** argv){
     //struct timespec startTime, endTime;
 
 	//make the graph object
-	graph* g = new graph();
+	circularArcGraph* g = new circularArcGraph();
 
     //read the file and create the arcs
     g->readData();

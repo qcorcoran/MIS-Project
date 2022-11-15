@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//permutation
 
 #include <iostream>
 #include <cstring>
@@ -7,7 +8,7 @@
 #include <cstdlib>
 #include <string>
 #include <time.h>
-#include "graph.h"
+#include "permutationGraph.h"
 #include "permutation.h"
 #include "splayTree.h"
 
@@ -18,7 +19,7 @@ int main(int argc, char** argv){
     struct timespec startTime, endTime;
 
 	//make the graph object
-	graph* g = new graph();
+	permutationGraph* g = new permutationGraph();
 
     //read in data from the file
     g->readData();
@@ -44,6 +45,9 @@ int main(int argc, char** argv){
 
     //output final result
     cout<<g->getMisSize()<<endl;
+
+    //deallocate the graph
+    delete g;
 
     return 0;
 }

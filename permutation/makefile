@@ -10,17 +10,17 @@ CFLAGS = -c -g -Wall
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
 
-all: main.o graph.o splayTree.o inputMaker.o verify.o
-	$(CC) -o permutation main.o graph.o splayTree.o
+all: main.o permutationGraph.o splayTree.o inputMaker.o verify.o
+	$(CC) -o permutation main.o permutationGraph.o splayTree.o
 	$(CC) -o inputMaker inputMaker.o
 	$(CC) -o verify verify.o
 
-permutation: main.o graph.o splayTree.o
-	$(CC) -o trapezoidShooting main.o graph.o splayTree.o
+permutation: main.o permutationGraph.o splayTree.o
+	$(CC) -o trapezoidShooting main.o permutationGraph.o splayTree.o
 
 main.o: main.cpp
 
-graph.o: graph.cpp
+permutationGraph.o: permutationGraph.cpp
 
 splayTree.o: splayTree.cpp
 

@@ -1,8 +1,18 @@
 //Quinn Corcoran
+//giftsGiving
 
 #include "tree.h"
 
 using namespace std;
+
+//destructor
+tree::~tree(){
+    for(int i=0; i < n; i++){
+        delete nodes[i];
+    }
+    delete[] mis;
+    delete[] nodes;
+}
 
 //read from an input file and create the tree
 void tree::readData(){
@@ -16,9 +26,14 @@ void tree::readData(){
     cin>>input;
     istringstream issn(input);
     issn >> intendedSize;
+    n = intendedSize;
 
-    //create the root node with lable 1 and itself as a parent
-    node* rootNode = new node(1);
+    //dynamic array allocation
+    mis = new int[n];
+    nodes = new node*[n];
+
+    //create the root node with label 1 and itself as a parent
+    node* rootNode = new node(1, n);
     rootNode->setParent(rootNode);
     root = rootNode;
     size++;
@@ -35,7 +50,7 @@ void tree::readData(){
         istringstream issc(input);
         issc >> child;
         //takes advantage of the input file giving parents in order
-        if(saved->lable != parent){
+        if(saved->label != parent){
             saved = nodes[parent - 1];
         }
         //insert child into tree with parent as its parent
@@ -44,11 +59,11 @@ void tree::readData(){
 }
 
 //inserts child node into the tree
-void tree::insert(int parentLable, int childLable, node* curNode){
+void tree::insert(int parentLabel, int childLabel, node* curNode){
     //ensure that the saved node is correct
-    assert(curNode->lable == parentLable);
-    node* child = new node(childLable);
-    nodes[childLable - 1] = child;
+    assert(curNode->label == parentLabel);
+    node* child = new node(childLabel, n);
+    nodes[childLabel - 1] = child;
     curNode->addChild(child);
     child->setParent(curNode);
     size++;
@@ -63,7 +78,7 @@ void tree::trim(node* leaf){
 //adds leaf nodes to the MIS and then removes them and their parent node
 void tree::computeMIS(node* curNode){
     if(curNode->mark == 1){
-        mis[misSize] = curNode->lable;
+        mis[misSize] = curNode->label;
         misSize++;
         trim(curNode);
     }
@@ -87,7 +102,7 @@ int tree::visit(node* curNode, string job){
         bruteSize++;
     }
     if(job == "traverse"){
-        cout<<curNode->lable<<endl;
+        cout<<curNode->label<<endl;
     }
     return 0;
 }
@@ -119,8 +134,8 @@ void tree::merge(int start, int middle, int end, string job){
 
     if(job == "mis"){
         //create temporary arrays
-        int first[sizeFirst];
-        int second[sizeSecond];
+        int* first = new int[sizeFirst];
+        int* second = new int[sizeSecond];
         //fill temporary arrays
         for(int i = 0; i < sizeFirst; i++){
             first[i] = mis[start + i];
@@ -151,11 +166,13 @@ void tree::merge(int start, int middle, int end, string job){
             indexSecond++;
             indexFull++;
         }
+        delete[] first;
+        delete[] second;
     }
     else{
         //create temporary arrays
-        node* first[sizeFirst];
-        node* second[sizeSecond];
+        node** first = new node*[sizeFirst];
+        node** second = new node*[sizeSecond];
         //fill temporary arrays
         for(int i = 0; i < sizeFirst; i++){
             first[i] = brute[start + i];
@@ -186,16 +203,20 @@ void tree::merge(int start, int middle, int end, string job){
             indexSecond++;
             indexFull++;
         }
+        delete[] first;
+        delete[] second;
     }
 }
 
 void tree::bruteForce(){
+    brute = new node*[n];
     postorderSearch(root, "brute");
     root->setParent(NULL);
     node* subset[100000];
     int subsetSize = 0;
     mergesort(0, getMisSize()-1, "brute");
     findSubsets(subset, subsetSize, bruteSize-1);
+    delete[] brute;
     return;
 }
 
@@ -204,7 +225,7 @@ void tree::findSubsets(node* subset[], int subsetSize, int index){
         if(subsetSize > misSize){
             if(validate(subset, subsetSize)){
                 for(int i=0; i < subsetSize; i++){
-                    mis[i] = subset[i]->lable;
+                    mis[i] = subset[i]->label;
                 }
                 misSize = subsetSize;
             }

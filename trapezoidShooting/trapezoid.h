@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//trapezoidShooting
 
 #ifndef trapezoid_H
 #define trapezoid_H
@@ -30,7 +31,7 @@ class trapezoid{
 	public:
 		trapezoid(int n, int ui, int vi, int wi, int zi) {lineNum = n; u = ui; v = vi; w = wi; z = zi; bottomLeft[0] = u; topRight[0] = v; bottomLeft[1] = w; topRight[1] = z; lis = 1; lisMax = 1;}
 		int getTopRight(int index) {return topRight[index];};
-	friend class graph;
+	friend class trapezoidGraph;
 	friend class splayTree;
 };
 

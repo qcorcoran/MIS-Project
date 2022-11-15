@@ -7,3 +7,6 @@ n=17 time=0.00907823sec
 n=17 time=0.00899207sec
 n=17 time=0.00905079sec
 n=17 time=0.00909985sec
+n=17 time=0.00892823sec
+n=17 time=0.276684sec
+n=17 time=0.456258sec

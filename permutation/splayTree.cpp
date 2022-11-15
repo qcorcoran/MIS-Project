@@ -1,4 +1,5 @@
 //Quinn Corcoran
+//permutation
 
 #include "splayTree.h"
 
@@ -157,17 +158,32 @@ void splayTree::zagRotate(node* pivot){
 
 void splayTree::updateLis(node* n){
     if(n->rightChild != NULL && n->leftChild != NULL){
-        n->perm->lisMax = max(n->perm->lis, n->rightChild->perm->lisMax);
-        n->perm->lisMax = max(n->perm->lis, n->leftChild->perm->lisMax);
+        if(n->key == 3302901){
+            cout<<n->perm->lisMax<<" "<<n->rightChild->perm->lisMax<<" "<<n->leftChild->perm->lisMax<<endl;
+        }
+        n->perm->lisMax = max(n->perm->lisMax, n->rightChild->perm->lisMax);
+        n->perm->lisMax = max(n->perm->lisMax, n->leftChild->perm->lisMax);
+        if(n->key == 3302901){
+            cout<<"under "<<n->perm->lisMax<<" "<<n->rightChild->perm->lisMax<<" "<<n->leftChild->perm->lisMax<<endl;
+        }
     }
     else if(n->rightChild != NULL){
-        n->perm->lisMax = max(n->perm->lis, n->rightChild->perm->lisMax);
+        if(n->key == 3302901){
+            cout<<n->perm->lisMax<<" "<<n->rightChild->perm->lisMax<<endl;
+        }
+        n->perm->lisMax = max(n->perm->lisMax, n->rightChild->perm->lisMax);
+        if(n->key == 3302901){
+            cout<<"under2 "<<n->perm->lisMax<<" "<<n->rightChild->perm->lisMax<<endl;
+        }
     }
     else if(n->leftChild != NULL){
-        n->perm->lisMax = max(n->perm->lis, n->leftChild->perm->lisMax);
-    }
-    else{
-        n->perm->lisMax = n->perm->lis;
+        if(n->key == 3302901){
+            cout<<n->perm->lisMax<<" "<<n->leftChild->perm->lisMax<<endl;
+        }
+        n->perm->lisMax = max(n->perm->lisMax, n->leftChild->perm->lisMax);
+        if(n->key == 3302901){
+            cout<<"under3 "<<n->perm->lisMax<<" "<<n->leftChild->perm->lisMax<<endl;
+        }
     }
 }
 
