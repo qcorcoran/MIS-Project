@@ -21,12 +21,11 @@ class node{
 	private:
 		int key;
 		trapezoid* trap;
-		int height;
 		node* parent;
 		node* leftChild;
 		node* rightChild;
 	public:
-		node(trapezoid* t) {trap = t; key = t->getTopRight(1); height = 1;  parent = NULL; leftChild = NULL; rightChild = NULL;}
+		node(trapezoid* t) {trap = t; key = t->getTopRight(1); parent = NULL; leftChild = NULL; rightChild = NULL;}
 		void setParent(node* n) {parent = n;}
 		void setLeftChild(node* n) {leftChild = n; n->setParent(this);}
 		void setRightChild(node* n) {rightChild = n; n->setParent(this);}

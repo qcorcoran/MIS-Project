@@ -35,6 +35,9 @@ void river::readData(){
     istringstream issn(input);
     issn >> n;
 
+    //initialize the maximum possible diameter based on a and b
+    initMaxDiameter();
+
     //dynamic array allocation
     points = new point*[n];
 
@@ -115,4 +118,14 @@ void river::merge(int start, int middle, int end){
     }
     delete[] first;
     delete[] second;
+}
+
+void river::buildGraph(int diameter){
+    splayTree* splay = new splayTree();
+    int i = 0;
+    int j = 1;
+    splayNode* inode = new splayNode(points[i]);
+    splay->splayInsert(inode, splay->getRoot());
+    splay->splayInsert(new splayNode(points[j]), splay->getRoot());
+    
 }

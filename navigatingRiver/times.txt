@@ -9,3 +9,4 @@ n=10 time=9.5233e-05sec
 n=50 time=0.000242786sec
 n=40 time=0.00020221sec
 n=36 time=0.000178792sec
+n=6 time=9.5012e-05sec

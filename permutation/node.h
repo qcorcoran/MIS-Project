@@ -21,12 +21,11 @@ class node{
 	private:
 		int key;
 		permutation* perm;
-		int height;
 		node* parent;
 		node* leftChild;
 		node* rightChild;
 	public:
-		node(permutation* p) {perm = p; key = p->getPvalue(); height = 1;  parent = NULL; leftChild = NULL; rightChild = NULL;}
+		node(permutation* p) {perm = p; key = p->getPvalue(); parent = NULL; leftChild = NULL; rightChild = NULL;}
 		void setParent(node* n) {parent = n;}
 		void setLeftChild(node* n) {leftChild = n; n->setParent(this);}
 		void setRightChild(node* n) {rightChild = n; n->setParent(this);}

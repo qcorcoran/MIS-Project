@@ -5,9 +5,12 @@
 
 using namespace std;
 
+//destructor
 trapezoidGraph::~trapezoidGraph(){
-    for(int i=0; i < n; i++){
+    for(int i=0; i < size; i++){
         delete trapezoids[i];
+    }
+    for(int i=0; i < boxesSize; i++){
         delete boxes[i];
     }
     delete[] trapezoids;

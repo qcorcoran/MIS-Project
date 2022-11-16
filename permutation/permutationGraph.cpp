@@ -11,6 +11,7 @@ permutationGraph::~permutationGraph(){
         delete permutations[i];
     }
     delete[] permutations;
+    delete splay;
 }
 
 void permutationGraph::readData(){
@@ -29,7 +30,7 @@ void permutationGraph::readData(){
     permutations = new permutation*[n];
 
     //read the rest of the file
-    while (size < n){
+    while(size < n){
         //set p based on the number on that line
         cin>>input;
         istringstream issp(input);
@@ -59,13 +60,11 @@ void permutationGraph::sweepLine(){
             perm->lisMax = max(perm->lis, permNode->getRightChild()->getPermutation()->lisMax);
         }
         else if(permNode->getLeftChild() != NULL){
-           perm->lis = permNode->getLeftChild()->getPermutation()->lisMax + 1;
+            perm->lis = permNode->getLeftChild()->getPermutation()->lisMax + 1;
         }
         else if(permNode->getRightChild() != NULL){
             perm->lisMax = max(perm->lis, permNode->getRightChild()->getPermutation()->lisMax);
         }
-        //splay->preorderTraversal(splay->getRoot());
-        //cout<<endl<<endl;
     }
     //get the final result
     misSize = splay->getRoot()->getPermutation()->lisMax;

@@ -5,19 +5,21 @@
 
 using namespace std;
 
+splayTree::~splayTree(){
+    while(root != NULL){
+        splayDelete(root);
+    }
+}
+
 void splayTree::insert(node* n, node* current){
     if(root == NULL){
         root = n;
-        n->height = 1;
         return;
     }
-    setHeight(current);
     if(n->key < current->key){
         //traverseLeft
         if(current->leftChild == NULL){
-            //cout<<n->key<<" set left child"<<endl;
             current->setLeftChild(n);
-            setHeight(current);
         }
         else{
             insert(n, current->leftChild);
@@ -27,7 +29,6 @@ void splayTree::insert(node* n, node* current){
         //traverseRight
         if(current->rightChild == NULL){
             current->setRightChild(n);
-            setHeight(current);
         }
         else{
             insert(n, current->rightChild);
@@ -39,29 +40,6 @@ void splayTree::splayInsert(node* n, node* r){
     insert(n, r);
     size++;
     splay(n);
-}
-
-void splayTree::setHeight(node* n){
-    if(n->leftChild != NULL && n->rightChild != NULL){
-        if(n->leftChild->height < n->rightChild->height){
-            n->height = n->rightChild->height + 1;
-        }
-        else{
-            n->height = n->leftChild->height + 1;
-        }
-    }
-    else if(n->leftChild != NULL && n->rightChild == NULL){
-        n->height = n->leftChild->height + 1;
-    }
-    else if(n->leftChild == NULL && n->rightChild != NULL){
-        n->height = n->rightChild->height + 1;
-    }
-    else{
-        n->height = 1;
-    }
-    if(n->parent != NULL){
-        setHeight(n->parent);
-    }
 }
 
 //single right rotation
@@ -97,16 +75,8 @@ void splayTree::zigRotate(node* pivot){
             root = lc;
         }
 
-        if(lcrc != NULL){
-            setHeight(lcrc);
-        }
-        setHeight(pivot);
         updateLis(pivot);
-        setHeight(lc);
         updateLis(lc);
-        if(lc->parent != NULL){
-            setHeight(lc->parent);
-        }
     }
 }
 
@@ -143,20 +113,13 @@ void splayTree::zagRotate(node* pivot){
             root = rc;
         }
 
-        if(rclc != NULL){
-            setHeight(rclc);
-        }
-        setHeight(pivot);
         updateLis(pivot);
-        setHeight(rc);
         updateLis(rc);
-        if(rc->parent != NULL){
-            setHeight(rc->parent);
-        }
     }
 }
 
 void splayTree::updateLis(node* n){
+    n->trap->lisMax = max(n->trap->lis, n->trap->lisMax);
     if(n->rightChild != NULL && n->leftChild != NULL){
         n->trap->lisMax = max(n->trap->lis, n->rightChild->trap->lisMax);
         n->trap->lisMax = max(n->trap->lis, n->leftChild->trap->lisMax);
@@ -166,9 +129,6 @@ void splayTree::updateLis(node* n){
     }
     else if(n->leftChild != NULL){
         n->trap->lisMax = max(n->trap->lis, n->leftChild->trap->lisMax);
-    }
-    else{
-        n->trap->lisMax = n->trap->lis;
     }
 }
 
@@ -247,6 +207,10 @@ void splayTree::splayDelete(node* x){
     }
     join(s[0]->leftChild, s[1]);
     size--;
+    if(root == x){
+        root = NULL;
+    }
+    delete x;
 }
 
 node* splayTree::search(int k, node* r){

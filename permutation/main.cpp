@@ -28,7 +28,7 @@ int main(int argc, char** argv){
     clock_gettime(CLOCK_REALTIME, &startTime);
 
     //runs the sweepline across the permutations
-    g->sweepLine();        
+    g->sweepLine();
     
     //timing ends here
     clock_gettime(CLOCK_REALTIME, &endTime);

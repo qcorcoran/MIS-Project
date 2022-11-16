@@ -22,6 +22,7 @@ int main(int argc, char** argv){
     int permutations = 0;
     int lis = 0;
     int lisStart = 0;
+    int lisStartVal = 0;
     int p = 0;
     int prevP = 0;
 
@@ -29,15 +30,12 @@ int main(int argc, char** argv){
     srand(time(NULL));
 
     //prompt user for input
-    /*
     cout<<"Enter name of input file to create: ";
     cin>>infile;
     cout<<"Enter name of answer file to create: ";
     cin>>ansfile;
     cout<<"Enter number of permutations to create: ";
     cin>>permutations;
-    */
-    permutations = 15;
 
     //create and open input file
     ofstream iFile(infile.c_str());
@@ -49,40 +47,39 @@ int main(int argc, char** argv){
     //the MIS will be equal to the number of sets
     lis = (rand() % permutations) + 1;
     lisStart = (rand() % (permutations-lis)) + 1;
+    lisStartVal = (rand() % (RANDMAX-lisStart)) + lis+lisStart-1;
 
-    cout<<lis<<" "<<lisStart<<endl;
-
-    int i = 0;
-    prevP = 1000000;
+    int i = 1;
+    prevP = lis + lisStartVal + lis;
     while(i < permutations){
-        if(i == lisStart-1){
-            cout<<"if "<<i<<endl;
-            p = (rand() % (prevP-1)) + 1;
-            cout<<"p "<<p<<" prevp "<<prevP<<endl;
+        if(i == lisStart){
+            p = lisStartVal;
+            cout<<p<<" "<<prevP<<endl;
             assert(p < prevP);
             prevP = p;
             iFile << p << "\n";
             i++;
             for(int j=1; j < lis; j++){
-                cout<<"for "<<i<<endl;
-                p = (rand() % 1000000) + prevP + 1;
+                p = prevP + 1;
                 assert(p > prevP);
-                cout<<"p "<<p<<" prevp "<<prevP<<endl;
                 prevP = p;
                 iFile << p << "\n";
                 i++;    
             }
+            prevP = lisStartVal-1;
+            assert(prevP < p);
         }
         if(i >= permutations){
             break;
         }
-        p = (rand() % prevP-1) + 1;
+        p = prevP-1;
         assert(p < prevP);
         prevP = p;
         iFile << p << "\n";
         i++;
     }
-    
+
+    cout<<lisStart<<" "<<lisStartVal<<endl;    
 
     //close the input file
     iFile.close();

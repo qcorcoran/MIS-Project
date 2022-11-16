@@ -10,19 +10,19 @@ CFLAGS = -c -g -Wall
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
 
-all: main.o river.o bst.o inputMaker.o verify.o
-	$(CC) -o navigatingRiver main.o river.o bst.o
+all: main.o river.o splayTree.o inputMaker.o verify.o
+	$(CC) -o navigatingRiver main.o river.o splayTree.o
 	$(CC) -o inputMaker inputMaker.o
 	$(CC) -o verify verify.o
 
-navigatingRiver: main.o river.o bst.o
-	$(CC) -o navigatingRiver main.o river.o bst.o
+navigatingRiver: main.o river.o splayTree.o
+	$(CC) -o navigatingRiver main.o river.o splayTree.o
 
 main.o: main.cpp
 
 river.o: river.cpp
 
-bst.o: bst.cpp
+splayTree.o: splayTree.cpp
 
 inputMaker: inputMaker.o
 	$(CC) -o inputMaker inputMaker.o

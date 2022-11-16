@@ -14,9 +14,9 @@ class splayTree{
 		int size;
 	public:
 		splayTree() {root = NULL; size = 0;} //Start with an empty tree
+		~splayTree();
 		void insert(node* n, node* current);
 		void splayInsert(node* n, node* r);
-		void setHeight(node* n);
 		void zigRotate(node* pivot);
 		void zagRotate(node* pivot);
 		void updateLis(node* n);

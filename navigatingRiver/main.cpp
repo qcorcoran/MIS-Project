@@ -10,8 +10,8 @@
 #include <time.h>
 #include "river.h"
 #include "point.h"
-#include "bst.h"
-#include "node.h"
+#include "splayTree.h"
+#include "splayNode.h"
 
 using namespace std;
 
@@ -30,15 +30,22 @@ int main(int argc, char** argv){
     //sort the array using mergesort
     r->mergesort(0, r->getSize()-1);
 
-    bst* b = new bst();
+    splayTree* s = new splayTree();
+    splayNode* del;
     for(int i=0; i < r->getSize(); i++){
         cout<<"("<<r->getPoint(i)->getX()<<", "<<r->getPoint(i)->getY()<<")"<<" | ";
-        b->insert(new node(r->getPoint(i)), b->getRoot());
+        splayNode* in = new splayNode(r->getPoint(i));
+        s->splayInsert(in, s->getRoot());
+        if(i == 3){
+            del = in;
+        }
     }
     cout<<endl;
-    b->preorderTraversal(b->getRoot());
+    s->preorderTraversal(s->getRoot());
     cout<<endl;
-
+    s->splayDelete(del);
+    s->preorderTraversal(s->getRoot());
+    cout<<endl;
 
     
     //timing ends here
