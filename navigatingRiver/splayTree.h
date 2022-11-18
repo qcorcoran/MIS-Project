@@ -26,7 +26,8 @@ class splayTree{
 		void splayDelete(splayNode* x);
 		splayNode* search(int k, splayNode* r);
 		splayNode* splaySearch(int k);
-		splayNode* getSuccessor(int k);
+		splayNode* getSuccessor(splayNode* node);
+		splayNode* getPredecessor(splayNode* node);
 		void inorderTraversal(splayNode* n);
 		void preorderTraversal(splayNode* n);
         //getters

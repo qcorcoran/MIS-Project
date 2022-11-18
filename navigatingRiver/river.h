@@ -12,8 +12,10 @@
 #include <cstddef>
 #include <cstring>
 #include <string>
+#include <math.h>
 #include "point.h"
 #include "splayTree.h"
+#include "graph.h"
 
 using namespace std;
 
@@ -26,18 +28,22 @@ class river{
         int d;
         int maxDiameter;
         point** points; //this is an array
-        int size;
+        int numPoints;
+        graph* g;
 
     public:
-        river() {a = 0; b = 0; c = 0; d = 0; n = 0; size = 0;}
+        river() {a = 0; b = 0; c = 0; d = 0; n = 0; numPoints = 0;}
         ~river();
         void readData();
         void initMaxDiameter() {maxDiameter = b - a;}
         void mergesort(int start, int end);
 		void merge(int start, int middle, int end);
+        void initGraph();
+        int distance(point* p1, point* p2);
+        int findBestDiameter();
         void buildGraph(int diameter);
         //getters
-        int getSize() {return size;}
+        int getNumPoints() {return numPoints;}
         point* getPoint(int i) {return points[i];}
 };
 

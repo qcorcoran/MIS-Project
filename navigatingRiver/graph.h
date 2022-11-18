@@ -9,15 +9,23 @@
 using namespace std;
 
 class graph{
-	private:
-        int maxVert;
+    private:
+        int v;
+        graphNode** verts; //this is an array
+        int numVerts;
         int** adj; //this is an array adjacency list
         int* numEdges; //this is an array
-		int size;		
-	public:
-		graph(int n) {maxVert = n; size = 0; adj = new int*[maxVert]; numEdges = (int*)calloc(maxVert, sizeof(int));}
+        int* visited; //this is an array
+    public:
+        graph(int n);
         ~graph();
-        void addEdge(graphNode* u, graphNode* v);
+        void reset();
+        void insert(point* p);
+        void addEdge(int u, int v);
+        void dfs(int index);
+        //getters
+        int getNumVerts() {return numVerts;}
+        int getVisited(int i) {return visited[i];}
 };
 
 #endif /* graph_H */

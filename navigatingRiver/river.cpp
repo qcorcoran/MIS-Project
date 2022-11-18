@@ -5,10 +5,11 @@
 
 //destructor
 river::~river(){
-    for(int i=0; i < n; i++){
+    for(int i=0; i < numPoints; i++){
         delete points[i];
     }
     delete[] points;
+    delete g;
 }
 
 //read from an input file
@@ -35,14 +36,17 @@ void river::readData(){
     istringstream issn(input);
     issn >> n;
 
+    //create the graph object
+    g = new graph(n);
+
+    //dynamically allocate points array
+    points = new point*[n];
+
     //initialize the maximum possible diameter based on a and b
     initMaxDiameter();
 
-    //dynamic array allocation
-    points = new point*[n];
-
     //read the rest of the input
-    while(size < n){
+    while(numPoints < n){
         //set the obstacle location
         cin>>input;
         istringstream issx(input);
@@ -53,8 +57,8 @@ void river::readData(){
         //create the new point
         point* p = new point(xi, yi);
         //insert the point into the points array
-        points[size] = p;
-        size++;
+        points[numPoints] = p;
+        numPoints++;
     }
 }
 
@@ -120,12 +124,96 @@ void river::merge(int start, int middle, int end){
     delete[] second;
 }
 
+void river::initGraph(){
+    //insert left wall
+    g->insert(new point(a, c));
+    for(int i=0; i < numPoints; i++){
+        g->insert(points[i]);
+    }
+    //insert right wall
+    g->insert(new point(b, d));
+}
+
+int river::distance(point* p1, point* p2){
+    int x1 = p1->getX();
+    int y1 = p1->getY();
+    int x2 = p2->getX();
+    int y2 = p2->getY();
+    return (pow((pow((x2 - x1), 2) + pow((y2 - y1), 2)), 0.5));
+}
+
+int river::findBestDiameter(){
+    int bestDiameter = 0;
+    int tryDiameter;
+    int l = 0;
+    int r = maxDiameter;
+    while(l <= r){
+        tryDiameter = (l + r) / 2;
+        buildGraph(tryDiameter);
+        if(g->getVisited(g->getNumVerts()-1)){
+            r = tryDiameter - 1;
+        }
+        else{
+            bestDiameter = tryDiameter;
+            l = tryDiameter + 1;
+        }
+    }
+    return bestDiameter;
+}
+
 void river::buildGraph(int diameter){
+    g->reset();
     splayTree* splay = new splayTree();
-    int i = 0;
-    int j = 1;
-    splayNode* inode = new splayNode(points[i]);
+    //sudo code goes here
+    int i = 1;
+    splayNode* r;
+    splayNode* inode = new splayNode(points[i], i);
+    splayNode* jnode;
     splay->splayInsert(inode, splay->getRoot());
-    splay->splayInsert(new splayNode(points[j]), splay->getRoot());
-    
+    for(int j=i+1; j <= n; j++){
+        //advance i
+        while((points[j]->getX() - points[i]->getX()) > diameter){
+            cout<<"whilei "<<i<<endl;
+            splay->splayDelete(inode);
+            i++;
+            inode = new splayNode(points[i], i);
+            splay->splayInsert(inode, splay->getRoot());
+        }
+        cout<<"for "<<j<<endl;
+        jnode = new splayNode(points[j], j);
+        r = splay->getSuccessor(jnode);
+        while(r != NULL && (r->getKey() - points[j]->getY()) <= diameter){
+            cout<<"while succ"<<endl;
+            if(distance(r->getPoint(), points[j]) >= diameter){
+                g->addEdge(r->getIndex(), j);
+            }
+            r = splay->getSuccessor(r);
+            if(r != NULL){
+                cout<<r->getIndex()<<" "<<r->getKey()<<endl;
+            }
+            else{
+                cout<<"NULL"<<endl;
+            }
+        }
+        r = splay->getPredecessor(jnode);
+        while(r != NULL && (points[j]->getY() - r->getKey()) <= diameter){
+            cout<<"while pred"<<endl;
+            if(distance(r->getPoint(), points[j]) >= diameter){
+                g->addEdge(r->getIndex(), j);
+            }
+            r = splay->getPredecessor(r);
+        }
+        cout<<"out"<<endl;
+        //check walls
+        if((points[j]->getX() - a) >= diameter){
+            g->addEdge(0, j);
+        }
+        if((b - points[j]->getX()) >= diameter){
+            g->addEdge(n+1, j);
+        }
+        splay->splayInsert(jnode, splay->getRoot());
+    }
+    //dfs to check for a path from the left wall node to the right wall node
+    g->dfs(0);
+    delete splay;
 }

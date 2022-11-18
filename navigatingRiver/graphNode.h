@@ -22,6 +22,7 @@ class graphNode{
         int nodeNum;
 		int key;
         point* p;
+		int index;
 	public:
 		graphNode(int n, point* k) {nodeNum = n; p = k; key = p->getX();}
 		int getKey() {return key;}
