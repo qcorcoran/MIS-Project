@@ -40,13 +40,18 @@ void river::readData(){
     g = new graph(n);
 
     //dynamically allocate points array
-    points = new point*[n];
+    points = new point*[n+2];
 
     //initialize the maximum possible diameter based on a and b
     initMaxDiameter();
 
+    //insert left wall
+    point* p = new point(a, c);
+    points[numPoints] = p;
+    numPoints++;
+
     //read the rest of the input
-    while(numPoints < n){
+    while(numPoints <= n){
         //set the obstacle location
         cin>>input;
         istringstream issx(input);
@@ -55,11 +60,16 @@ void river::readData(){
         istringstream issy(input);
         issy >> yi;
         //create the new point
-        point* p = new point(xi, yi);
+        p = new point(xi, yi);
         //insert the point into the points array
         points[numPoints] = p;
         numPoints++;
     }
+    //insert right wall
+    p = new point(b, d);
+    points[numPoints] = p;
+    numPoints++;
+    cout<<"numPoints "<<numPoints<<endl;
 }
 
 //recursive mergesort
@@ -125,21 +135,20 @@ void river::merge(int start, int middle, int end){
 }
 
 void river::initGraph(){
-    //insert left wall
-    g->insert(new point(a, c));
+    cout<<"numpoints "<<numPoints<<endl;
     for(int i=0; i < numPoints; i++){
         g->insert(points[i]);
     }
-    //insert right wall
-    g->insert(new point(b, d));
 }
 
-int river::distance(point* p1, point* p2){
+double river::distance(point* p1, point* p2){
     int x1 = p1->getX();
     int y1 = p1->getY();
     int x2 = p2->getX();
     int y2 = p2->getY();
-    return (pow((pow((x2 - x1), 2) + pow((y2 - y1), 2)), 0.5));
+    double distance = (pow((pow((x2 - x1), 2) + pow((y2 - y1), 2)), 0.5));
+    cout<<"distance "<<distance<<" "<<p1->getX()<<" "<<p2->getX()<<endl;
+    return distance;
 }
 
 int river::findBestDiameter(){
@@ -149,7 +158,9 @@ int river::findBestDiameter(){
     int r = maxDiameter;
     while(l <= r){
         tryDiameter = (l + r) / 2;
+        cout<<"try "<<tryDiameter<<endl;
         buildGraph(tryDiameter);
+        //g->printEdges();
         if(g->getVisited(g->getNumVerts()-1)){
             r = tryDiameter - 1;
         }
@@ -173,42 +184,31 @@ void river::buildGraph(int diameter){
     for(int j=i+1; j <= n; j++){
         //advance i
         while((points[j]->getX() - points[i]->getX()) > diameter){
-            cout<<"whilei "<<i<<endl;
             splay->splayDelete(inode);
             i++;
             inode = new splayNode(points[i], i);
             splay->splayInsert(inode, splay->getRoot());
         }
-        cout<<"for "<<j<<endl;
         jnode = new splayNode(points[j], j);
         r = splay->getSuccessor(jnode);
         while(r != NULL && (r->getKey() - points[j]->getY()) <= diameter){
-            cout<<"while succ"<<endl;
-            if(distance(r->getPoint(), points[j]) >= diameter){
+            if(distance(r->getPoint(), points[j]) > diameter){
                 g->addEdge(r->getIndex(), j);
             }
             r = splay->getSuccessor(r);
-            if(r != NULL){
-                cout<<r->getIndex()<<" "<<r->getKey()<<endl;
-            }
-            else{
-                cout<<"NULL"<<endl;
-            }
         }
         r = splay->getPredecessor(jnode);
         while(r != NULL && (points[j]->getY() - r->getKey()) <= diameter){
-            cout<<"while pred"<<endl;
-            if(distance(r->getPoint(), points[j]) >= diameter){
+            if(distance(r->getPoint(), points[j]) > diameter){
                 g->addEdge(r->getIndex(), j);
             }
             r = splay->getPredecessor(r);
         }
-        cout<<"out"<<endl;
         //check walls
-        if((points[j]->getX() - a) >= diameter){
+        if((points[j]->getX() - a) < diameter){
             g->addEdge(0, j);
         }
-        if((b - points[j]->getX()) >= diameter){
+        if((b - points[j]->getX()) < diameter){
             g->addEdge(n+1, j);
         }
         splay->splayInsert(jnode, splay->getRoot());

@@ -23,6 +23,7 @@ class graph{
         void insert(point* p);
         void addEdge(int u, int v);
         void dfs(int index);
+        void printEdges();
         //getters
         int getNumVerts() {return numVerts;}
         int getVisited(int i) {return visited[i];}

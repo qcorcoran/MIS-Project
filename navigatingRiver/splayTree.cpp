@@ -19,7 +19,6 @@ void splayTree::insert(splayNode* n, splayNode* current){
     if(n->key < current->key){
         //traverseLeft
         if(current->leftChild == NULL){
-            //cout<<n->key<<" set left child"<<endl;
             current->setLeftChild(n);
         }
         else{
@@ -40,9 +39,7 @@ void splayTree::insert(splayNode* n, splayNode* current){
 void splayTree::splayInsert(splayNode* n, splayNode* r){
     insert(n, r);
     size++;
-    cout<<"inserted now splay"<<endl;
     splay(n);
-    cout<<"splayed"<<endl;
 }
 
 //single right rotation
@@ -120,7 +117,6 @@ void splayTree::splay(splayNode* x){
             zigRotate(x->parent);
         }
         else if(root->rightChild == x){ //zag rotation
-            //cout<<"in "<<root->getKey()<<endl;
             zagRotate(x->parent);
         }
         else if(x->parent->leftChild == x && x->parent->parent->leftChild == x->parent){ //zig-zig rotation
@@ -192,6 +188,9 @@ void splayTree::splayDelete(splayNode* x){
         join(s[0]->leftChild, s[1]);
     }
     size--;
+    if(root == x){
+        root = NULL;
+    }
     delete x;
 }
 
@@ -227,7 +226,7 @@ splayNode* splayTree::getSuccessor(splayNode* node){
         //go left
         if(current != NULL && k <= current->key){
             //update successor
-            if(current != node){
+            if(current->key != k){
                 successor = current;
             }
             current = current->leftChild;
@@ -258,7 +257,7 @@ splayNode* splayTree::getPredecessor(splayNode* node){
         //go right
         else if(current != NULL && k >= current->key){
             //update predecessor
-            if(current != node){
+            if(current->key != k){
                 predecessor = current;
             }
             current = current->rightChild;

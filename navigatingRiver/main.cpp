@@ -18,9 +18,14 @@
 using namespace std;
 
 int main(int argc, char** argv){
+    int bestDiameter = 0;
     //struct to time the algorithm
     //struct timespec startTime, endTime; 
 	
+    graph* g = new graph(5);
+    g->reset();
+    delete g;
+
 	//make graph object
 	river* r = new river();
 
@@ -38,8 +43,8 @@ int main(int argc, char** argv){
     r->initGraph();
     cout<<"graph nodes made"<<endl;
 
-    r->findBestDiameter();
-    cout<<"found diameter"<<endl;
+    bestDiameter = r->findBestDiameter();
+    cout<<"found diameter "<<bestDiameter<<endl;
 
     /*
     //timing ends here

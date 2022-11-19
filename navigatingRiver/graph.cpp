@@ -13,22 +13,26 @@ graph::graph(int n){
     for(int i=0; i < v; i++){
         adj[i] = new int[v];
     }
-    numEdges = (int*)calloc(v, sizeof(int));
-    visited = (int*)calloc(v, sizeof(int));
+    numEdges = new int[v];
+    visited = new int[v];
+    reset();
 }
 
 graph::~graph(){
     for(int i=0; i < numVerts; i++){
         delete verts[i];
     }
+    for(int i=0; i < v; i++){
+        delete[] adj[i];
+    }
     delete[] verts;
     delete[] adj;
-    free(numEdges);
-    free(visited);
+    delete[] numEdges;
+    delete[] visited;
 }
 
 void graph::reset(){
-    for(int i=0; i < numVerts; i++){
+    for(int i=0; i < v; i++){
         numEdges[i] = 0;
         visited[i] = 0;
     }
@@ -41,20 +45,30 @@ void graph::insert(point* p){
 }
 
 void graph::addEdge(int u, int v){
-    adj[u][numEdges[u]] = 1;
+    //cout<<"u: "<<u<<" v: "<<v<<endl;
+    adj[u][numEdges[u]] = v;
     numEdges[u]++;
-    adj[v][numEdges[v]] = 1;
+    adj[v][numEdges[v]] = u;
     numEdges[v]++;
 }
 
 void graph::dfs(int index){
     visited[index] = 1;
-    //cout <<index<<" ";
+    cout <<index<<" ";
     for(int i=0; i < numEdges[index]; i++){
-        if(adj[index][i]){
-            if(!visited[i]){
-                dfs(i);
-            }
+        if(!visited[adj[index][i]]){
+            dfs(adj[index][i]);
         }
+    }
+}
+
+void graph::printEdges(){
+    cout<<"printing "<<numEdges[0]<<" "<<numVerts<<endl;
+    for(int i=0; i < numVerts; i++){
+        cout<<i<<": ";
+        for(int j=0; j < numEdges[i]; j++){
+            cout<<j<<":"<<adj[i][j]<<" ";
+        }
+        cout<<endl;
     }
 }
