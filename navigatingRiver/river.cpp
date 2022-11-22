@@ -180,6 +180,14 @@ void river::buildGraph(int diameter){
     splayNode* r;
     splayNode* inode = new splayNode(points[i], i);
     splayNode* jnode;
+    //check walls on i
+    if((points[i]->getX() - a) < diameter){
+        g->addEdge(0, i);
+    }
+    if((b - points[i]->getX()) < diameter){
+        g->addEdge(n+1, i);
+        g->printEdges();
+    }
     splay->splayInsert(inode, splay->getRoot());
     for(int j=i+1; j <= n; j++){
         //advance i
@@ -192,17 +200,23 @@ void river::buildGraph(int diameter){
         jnode = new splayNode(points[j], j);
         r = splay->getSuccessor(jnode);
         while(r != NULL && (r->getKey() - points[j]->getY()) <= diameter){
-            if(distance(r->getPoint(), points[j]) > diameter){
+            if(distance(r->getPoint(), points[j]) < diameter){
                 g->addEdge(r->getIndex(), j);
             }
             r = splay->getSuccessor(r);
+            if(r != NULL){
+                splay->splay(r);
+            }
         }
         r = splay->getPredecessor(jnode);
         while(r != NULL && (points[j]->getY() - r->getKey()) <= diameter){
-            if(distance(r->getPoint(), points[j]) > diameter){
+            if(distance(r->getPoint(), points[j]) < diameter){
                 g->addEdge(r->getIndex(), j);
             }
             r = splay->getPredecessor(r);
+            if(r != NULL){
+                splay->splay(r);
+            }
         }
         //check walls
         if((points[j]->getX() - a) < diameter){
@@ -210,6 +224,7 @@ void river::buildGraph(int diameter){
         }
         if((b - points[j]->getX()) < diameter){
             g->addEdge(n+1, j);
+            g->printEdges();
         }
         splay->splayInsert(jnode, splay->getRoot());
     }
