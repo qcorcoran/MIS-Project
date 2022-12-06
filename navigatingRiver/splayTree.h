@@ -20,7 +20,9 @@ class splayTree{
 		void zigRotate(splayNode* pivot);
 		void zagRotate(splayNode* pivot);
 		void splay(splayNode* x);
-		splayNode* splayMax();
+		splayNode* splayMax(splayNode* r);
+		splayNode* strictMax(splayNode* r);
+		splayNode* splayMin(splayNode* r);
 		splayNode** split(splayNode* x);
 		splayNode* join(splayNode* leftSide, splayNode* rightSide);
 		void splayDelete(splayNode* x);

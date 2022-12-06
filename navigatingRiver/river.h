@@ -42,6 +42,7 @@ class river{
         double distance(point* p1, point* p2);
         int findBestDiameter();
         void buildGraph(int diameter);
+        void buildGraphBrute(int diameter);
         //getters
         int getNumPoints() {return numPoints;}
         point* getPoint(int i) {return points[i];}

@@ -10,7 +10,9 @@ graph::graph(int n){
     verts = new graphNode*[v];
     numVerts = 0;
     adj = new int*[v];
+    cout<<"v "<<v<<endl;
     for(int i=0; i < v; i++){
+        cout<<"in "<<i<<endl;
         adj[i] = new int[v];
     }
     numEdges = new int[v];
@@ -19,12 +21,17 @@ graph::graph(int n){
 }
 
 graph::~graph(){
+    cout<<"here"<<endl;
     for(int i=0; i < numVerts; i++){
         delete verts[i];
     }
+    cout<<"there "<<v<<endl;
     for(int i=0; i < v; i++){
+        cout<<i<<" "<<adj[i][0]<<endl;
         delete[] adj[i];
+        cout<<"HAH"<<endl;
     }
+    cout<<"this"<<endl;
     delete[] verts;
     delete[] adj;
     delete[] numEdges;
@@ -45,7 +52,9 @@ void graph::insert(point* p){
 }
 
 void graph::addEdge(int u, int v){
-    //cout<<"u: "<<u<<" v: "<<v<<endl;
+    if(u == v){
+        return;
+    }
     adj[u][numEdges[u]] = v;
     numEdges[u]++;
     adj[v][numEdges[v]] = u;
@@ -67,7 +76,7 @@ void graph::printEdges(){
     for(int i=0; i < numVerts; i++){
         cout<<i<<": ";
         for(int j=0; j < numEdges[i]; j++){
-            cout<<j<<":"<<adj[i][j]<<" ";
+            cout<<adj[i][j]<<" ";
         }
         cout<<endl;
     }

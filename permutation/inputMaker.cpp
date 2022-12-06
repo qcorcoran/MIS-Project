@@ -8,7 +8,6 @@
 #include <cstdlib>
 #include <string>
 #include <assert.h>
-#include <time.h>
 
 #define RANDMAX 32767
 

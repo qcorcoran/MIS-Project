@@ -8,7 +8,6 @@
 #include <cstdlib>
 #include <string>
 #include <assert.h>
-#include <time.h>
 #include <math.h>
 
 #define RANDMAX 32767
@@ -17,17 +16,17 @@ using namespace std;
 
 int main(int argc, char** argv){
     //declare local variables
-    string ansfile = "answer.txt";
-    string infile = "input.txt";
+    string ansfile = "answer20.txt";
+    string infile = "input20.txt";
     ifstream myfile;
-    int numPoints = 0;
+    int numPoints = 20;
     int pointsRem = 0;
     int leftRight = 0;
     int minX = -1;
-    int maxX = 50;
+    int maxX = 25;
     int minY = 0;
-    int maxY = 100;
-    int diameter = 3;
+    int maxY = 50;
+    int diameter = 6;
     int point[2];
     int leftOpen[2];
     int rightOpen[2];
@@ -73,7 +72,7 @@ int main(int argc, char** argv){
     rightOpen[1] = leftOpen[1];
     pointsRem--;
     //ensure that the gap is the right size
-    assert((pow((pow((rightOpen[0] - leftOpen[0]), 2) + pow((rightOpen[1] - leftOpen[1]), 2)), 0.5)) == diameter);
+    assert(rightOpen[0] - leftOpen[0] == diameter);
     //write the gap points to the file
     iFile << leftOpen[0] << " " << leftOpen[1] << "\n";
     iFile << rightOpen[0] << " " << rightOpen[1] << "\n";
@@ -110,7 +109,7 @@ int main(int argc, char** argv){
         //ensure the wall has no gaps
         assert((pow((pow((point[0] - prevPoint[0]), 2) + pow((point[1] - prevPoint[1]), 2)), 0.5)) <= diameter);
         //write the new point to the file
-        iFile << point[0] << " " << point[1] << "\n";   
+        iFile << point[0] << " " << point[1] << "\n";
     }
 
     //create our rightside wall

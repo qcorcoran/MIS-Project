@@ -139,13 +139,42 @@ void splayTree::splay(splayNode* x){
     root = x;
 }
 
-splayNode* splayTree::splayMax(){  
+splayNode* splayTree::splayMax(splayNode* r){
+    if(r == NULL){
+        return r;
+    }
     //loop down to the rightmost leaf
-    splayNode* current = root;
+    splayNode* current = r;
     while(current->rightChild != NULL){
         current = current->rightChild;
     }
     splay(current);
+    return current;
+}
+
+splayNode* splayTree::strictMax(splayNode* r){
+    if(r == NULL){
+        return r;
+    }
+    //loop down to the rightmost leaf
+    splayNode* current = r;
+    while(current->rightChild != NULL){
+        current = current->rightChild;
+    }
+    return current;
+}
+
+splayNode* splayTree::splayMin(splayNode* r){
+    if(r == NULL){
+        return r;
+    }
+    //loop down to the leftmost leaf
+    splayNode* current = r;
+    while(current->leftChild != NULL){
+        current = current->leftChild;
+    }
+    splay(current);
+    
     return current;
 }
 
@@ -172,7 +201,7 @@ splayNode* splayTree::join(splayNode* leftSide, splayNode* rightSide){
     if(rightSide == NULL){
         return leftSide;
     }
-    splayNode* x = splayMax();
+    splayNode* x = splayMax(root);
     x->rightChild = rightSide;
     rightSide->parent = x;
     return x;
@@ -226,7 +255,7 @@ splayNode* splayTree::getSuccessor(splayNode* node){
         //go left
         if(current != NULL && k <= current->key){
             //update successor
-            if(current->key != k){
+            if(current != node){
                 successor = current;
             }
             current = current->leftChild;
@@ -251,15 +280,15 @@ splayNode* splayTree::getPredecessor(splayNode* node){
     splayNode* predecessor = NULL;
     while(1){
         //go left
-        if(current != NULL && k < current->key){
+        if(current != NULL && k <= current->key){
+            if(current != node){
+                predecessor = current;
+            }
             current = current->leftChild;
         }
         //go right
-        else if(current != NULL && k >= current->key){
+        else if(current != NULL && k > current->key){
             //update predecessor
-            if(current->key != k){
-                predecessor = current;
-            }
             current = current->rightChild;
         }
         else{
@@ -277,8 +306,18 @@ void splayTree::inorderTraversal(splayNode* n){
     //recurse on left child
     inorderTraversal(n->leftChild);
  
-    //print the key
-    cout<<n->key<<" ";
+    //print the index
+    cout<<n->getIndex();
+    if(n->parent != NULL){
+        cout<<" P:"<<n->parent->getIndex();
+    }
+    if(n->getLeftChild() != NULL){
+        cout<<" L:"<<n->getLeftChild()->getIndex();
+    }
+    if(n->getRightChild() != NULL){
+        cout<<" R:"<<n->getRightChild()->getIndex();
+    }
+    cout<<" | ";
  
     //recurse on right child
     inorderTraversal(n->rightChild);
