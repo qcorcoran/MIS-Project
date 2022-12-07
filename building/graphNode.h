@@ -20,11 +20,9 @@ class graphNode{
 	private:
         int nodeNum;
 		box* build;
-		int key;
 		int index;
 	public:
 		graphNode(int n, box* b) {nodeNum = n; build = b; index = b->getIndex();}
-		int getIndex() {return index;}
 	friend class graph;
 };
 

@@ -58,12 +58,17 @@ void permutationGraph::sweepLine(){
         if(permNode->getLeftChild() != NULL && permNode->getRightChild() != NULL){
             perm->lis = permNode->getLeftChild()->getPermutation()->lisMax + 1;
             perm->lisMax = max(perm->lis, permNode->getRightChild()->getPermutation()->lisMax);
+            cout<<"if1 "<<perm->pValue<<" "<<perm->lisMax<<" "<<perm->lis<<endl;
+            cout<<"leftChild "<<permNode->getLeftChild()->getPermutation()->pValue<<" "<<permNode->getLeftChild()->getPermutation()->lisMax<<endl;
+            cout<<"rightChild "<<permNode->getRightChild()->getPermutation()->pValue<<endl;
         }
         else if(permNode->getLeftChild() != NULL){
             perm->lis = permNode->getLeftChild()->getPermutation()->lisMax + 1;
+            cout<<"if2 "<<perm->pValue<<" "<<perm->lisMax<<" "<<perm->lis<<endl;
         }
         else if(permNode->getRightChild() != NULL){
             perm->lisMax = max(perm->lis, permNode->getRightChild()->getPermutation()->lisMax);
+            cout<<"if3 "<<perm->pValue<<" "<<perm->lisMax<<" "<<perm->lis<<endl;
         }
     }
     //get the final result

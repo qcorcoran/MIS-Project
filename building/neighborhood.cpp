@@ -8,7 +8,8 @@ neighborhood::~neighborhood(){
     for(int i=0; i < n; i++){
         delete boxes[i];
     }
-    delete boxes;
+    delete[] boxes;
+    delete g;
 }
 
 //read from an input file
@@ -53,8 +54,6 @@ void neighborhood::readData(){
 
         numBoxes++;
     }
-    //initalize graph
-    initGraph();
 }
 
 //recursive mergesort
@@ -148,12 +147,17 @@ void neighborhood::initGraph(){
 }
 
 void neighborhood::buildGraph(){
+    //initalize graph nodes
+    initGraph();
+    //create graph edges
     for(int i=0; i < numBoxes; i++){
         for(int j=i+1; j < numBoxes; j++){
+            if(boxes[i]->r < boxes[j]->l){
+                break;
+            }
             if(intersecting(boxes[i], boxes[j]) && i != j){
                 g->addEdge(boxes[i]->index-1, boxes[j]->index-1);
             }
         }
     }
-    g->printEdges();
 }

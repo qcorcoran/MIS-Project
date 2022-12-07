@@ -21,13 +21,12 @@ using namespace std;
 class neighborhood{
     private:
         int n;
-        int numPaths;
         box** boxes; //this is an array
         int numBoxes;
         graph* g;
 
     public:
-        neighborhood() {n = 0; numPaths = 0; numBoxes = 0;};
+        neighborhood() {n = 0; numBoxes = 0;};
         ~neighborhood();
         void readData();
         void mergesort(int start, int end);

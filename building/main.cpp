@@ -16,29 +16,28 @@ using namespace std;
 
 int main(int argc, char** argv){
     //struct to time the algorithm
-    //struct timespec startTime, endTime; 
+    struct timespec startTime, endTime; 
 
 	//make graph object
 	neighborhood* nb = new neighborhood();
 
     //read from the input file
     nb->readData();
-    cout<<"read"<<endl;
+
 
     //timing starts here
-    //clock_gettime(CLOCK_REALTIME, &startTime);
+    clock_gettime(CLOCK_REALTIME, &startTime);
     //sort the array using mergesort
     nb->mergesort(0, nb->getNumBoxes()-1);
-    cout<<"sorted"<<endl;
+
     
     //initialize the graph nodes
     nb->buildGraph();
-    cout<<"graph built"<<endl;
 
-    nb->getGraph()->dfs(0);
-    cout<<"ran dfs"<<endl;
 
-    /*
+    //run modified dfs
+    nb->getGraph()->dfs(0, -1);
+
     //timing ends here
     clock_gettime(CLOCK_REALTIME, &endTime);
     //calculate time to run the algorithm
@@ -49,11 +48,14 @@ int main(int argc, char** argv){
     //add runtime to times file
     ofstream timeStream;
     timeStream.open("times.txt", ios_base::app);
-    timeStream<<"n="<<r->getNumPoints()<<" time="<<finalTime<<"sec\n";
+    timeStream<<"n="<<nb->getNumBoxes()<<" time="<<finalTime<<"sec\n";
     timeStream.close();
-    */
 
     //output the final result
+    cout<<nb->getGraph()->getNumPaths()<<"\n";
+    for(int i=0; i < nb->getGraph()->getNumPaths(); i++){
+        cout<<nb->getGraph()->getPath(i);
+    }
 
     //deallocate the river
     delete nb;

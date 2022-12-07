@@ -1,0 +1,13 @@
+n=100 time=0.000421484sec
+n=100 time=0.000413155sec
+n=1000 time=0.0211516sec
+n=10000 time=2.01351sec
+n=6 time=0.0406949sec
+n=6 time=0.0633574sec
+n=6 time=0.0401897sec
+n=6 time=6.4678e-05sec
+n=1000 time=0.00214703sec
+n=10000 time=0.0249836sec
+n=10000 time=0.036301sec
+n=10000 time=0.0254607sec
+n=10000 time=1.37905sec
