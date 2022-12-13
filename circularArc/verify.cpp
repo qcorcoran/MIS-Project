@@ -48,9 +48,11 @@ int main(int argc, char** argv){
 
     //compare the two answers
     if(answer1 == answer2){
+        cout<<answer1<<" == "<<answer2<<endl;
         cout<<"VERIFIED"<<endl;
     }
     else{
+        cout<<answer1<<" != "<<answer2<<endl;
         cout<<"ANSWERS ARE NOT THE SAME"<<endl;
     }
 
