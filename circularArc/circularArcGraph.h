@@ -16,18 +16,20 @@ class circularArcGraph{
         int radius;
 		arc** arcs; //this is an array
         int size;
-		int mimSize;
+		int misSize;
 	public:
-		circularArcGraph() {n = 0; size = 0; mimSize = 0;} //Start with an empty graph
+		circularArcGraph() {n = 0; size = 0; misSize = 0;} //Start with an empty graph
+        ~circularArcGraph();
 		void readData(); //reads in data from a text file and creates the arcs
         void intersection(arc* ark); //sets the intersection points of an arc using the quadratic formula
+        int overlapping(arc* i, arc* j);
+        void initNext();
+        void runMis();
         void mergesort(int start, int end, string sortType);
         void merge(int start, int middle, int end, string sortType);
-        void initNext();
-        void createLineGraph();
         //getters
         int getSize() {return size;}
-        int getMimSize() {return mimSize;}
+        int getMisSize() {return misSize;}
         arc* getArc(int i) {return arcs[i];}
 };
 

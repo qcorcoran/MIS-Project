@@ -1,0 +1,4 @@
+n=8 time=3.5917e-05sec
+n=8 time=2.155e-06sec
+n=8 time=8.284e-06sec
+n=8 time=1.0369e-05sec

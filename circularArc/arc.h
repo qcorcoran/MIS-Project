@@ -29,18 +29,17 @@ class arc{
 		double crossProduct; //cross product of the intersection points
 		double startTheta; //angle of the start point
 		double endTheta; //angle of the end point
+		int visited;
 		arc* next;
 	public:
-		arc(string num, int a, int b, int c) {lineNum = num; ai = a; bi = b; ci = c; next = NULL;}
-		arc(string num, double st, double et) {lineNum = num; startTheta = st; endTheta = et; next = NULL;} //used when setting optimum arcs in linegraph function
-		arc(string num, arc* a) {lineNum = num; startTheta = a->startTheta; endTheta = a->endTheta; next = NULL;} //used when setting optimum arcs in linegraph function
+		arc(string num, int a, int b, int c) {lineNum = num; ai = a; bi = b; ci = c; visited = 0; next = NULL;}
 		void setIntersect1(double x, double y) {intersect1[0] = x; intersect1[1] = y;} 
 		void setIntersect2(double x, double y) {intersect2[0] = x; intersect2[1] = y;}
 		void setCrossProduct() {crossProduct = (intersect1[0] * intersect2[1]) - (intersect1[1] * intersect2[0]);}
 		void setStartTheta(double intersection[2]) {startTheta = acos(intersection[0] / (sqrt(pow(intersection[0], 2) + pow(intersection[1], 2)))); if(intersection[1] < 0){startTheta = 2*M_PI - startTheta;}}
 		void setEndTheta(double intersection[2]) {endTheta = acos(intersection[0] / (sqrt(pow(intersection[0], 2) + pow(intersection[1], 2)))); if(intersection[1] < 0){endTheta = 2*M_PI - endTheta;}}
 		void setNext(arc* n) {next = n;}
-		//getters mostly only used in main for debug prints
+		//getters
 		string getLineNum() {return lineNum;}
 		double getIntersect1(int i) {return intersect1[i];}
 		double getIntersect2(int i) {return intersect2[i];}

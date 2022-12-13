@@ -5,6 +5,14 @@
 
 using namespace std;
 
+//destructor
+circularArcGraph::~circularArcGraph(){
+    for(int i=0; i < n; i++){
+        delete arcs[i];
+    }
+    delete[] arcs;
+}
+
 void circularArcGraph::readData(){
     //declare local variables
     string input = "";
@@ -57,6 +65,7 @@ void circularArcGraph::readData(){
     }
 }
 
+//check intersections of a line with the circle and set the arc start and endpoint
 void circularArcGraph::intersection(arc* ark){
     //get slope intercept form
     double slope = ark->ai / (ark->bi*-1);
@@ -92,6 +101,69 @@ void circularArcGraph::intersection(arc* ark){
     }
 }
 
+//check if two arcs are overlapping
+int circularArcGraph::overlapping(arc* i, arc* j){
+    if((j->startTheta < j->endTheta) && (i->endTheta > M_PI)){
+        return 1;
+    }
+    if(j->startTheta < i->endTheta){
+        return 0;
+    }
+    else{
+        return 1;
+    }
+}
+
+//this is the next function that sets the next for each arc
+void circularArcGraph::initNext(){
+    int i = 0;
+    int j = 1;
+    //run until the next is set for all arcs
+    while(i < size){
+        while(overlapping(arcs[i], arcs[j])){
+            //advance j if it overlaps i
+            j++;
+            //make array circular
+            if(j >= size){
+                j = 0;
+            }
+        }
+        //set next if i and j do not overlap
+        arcs[i]->setNext(arcs[j]);
+        i++;
+        if(i == j){
+            j++;
+        }
+        //make array circular
+        if(j >= size){
+            j = 0;
+        }
+    }
+}
+
+//run MIS algorithm for an circular-arc graph
+void circularArcGraph::runMis(){
+    arc* goodArc = NULL;
+    arc* currentArc = arcs[0];
+    while(1){
+        currentArc->visited = 1;
+        currentArc = currentArc->next;
+        //check if we found a good arc
+        if(currentArc->visited){
+            goodArc = currentArc;
+            break;
+        }
+    }
+    while(1){
+        misSize++;
+        currentArc = currentArc->next;
+        //once we have completed the directed cycle we are done
+        if(currentArc == goodArc){
+            break;
+        }
+    }
+}
+
 //recursive mergesort
 void circularArcGraph::mergesort(int start, int end, string sortType){
     //base case
@@ -118,8 +190,8 @@ void circularArcGraph::merge(int start, int middle, int end, string sortType){
     int indexFull = start;
 
     //create temporary arrays
-    arc* first[sizeFirst];
-    arc* second[sizeSecond];
+    arc** first = new arc*[sizeFirst];
+    arc** second = new arc*[sizeSecond];
     //fill temporary arrays
     for(int i = 0; i < sizeFirst; i++){
         first[i] = arcs[start + i];
@@ -163,135 +235,6 @@ void circularArcGraph::merge(int start, int middle, int end, string sortType){
         indexSecond++;
         indexFull++;
     }
-}
-
-//this is the next function that sets the next for each arc
-void circularArcGraph::initNext(){
-    int i = 0;
-    int j = 1;
-    int set = 0;
-    int looped = 0;
-    double iend;
-    double jend;
-    double jstart;
-
-    //run until the next is set for all arcs
-    while(set < size){        
-        //make array circular
-        if(j >= size){
-            j = 0;
-            //set for when you have looped back
-            looped = 1;
-        }
-
-        iend = arcs[i]->endTheta;
-        jend = arcs[j]->endTheta;
-        jstart = arcs[j]->startTheta;
-
-        //check if j is stradling
-        if(arcs[j]->startTheta < arcs[j]->endTheta){
-            //do we need to check if these are above x-axis?
-            iend -= 2*M_PI;
-            jend -= 2*M_PI;
-        }
-        else if(looped == 1){ //if it has looped back and j does not stradle
-            //do we need to check if these are above x-axis?
-            jend -= 2*M_PI;
-            jstart -= 2*M_PI;
-        }
-        if(iend <= jstart && iend >= jend){ //check if it overlaps and move j if it does
-            j++;
-        }
-        else{ //set next if i and j do not overlap
-            arcs[i]->setNext(arcs[j]);
-            set++;
-            i++;
-            if(i == j){
-                j++;
-            }
-        }
-    }
-}
-
-//this function creates the L(G)^2 and sets it as the set of arcs in our graph object
-void circularArcGraph::createLineGraph(){
-    stack<arc*> arcStack;
-    arc* topArc;
-    arc* lineGraph[1000000];
-    int lineGraphSize = 0;
-    string lable = "";
-    double arcsEnd = 0;
-    double topEnd = 0;
-
-    //this is all based off of the sudocode from the paper
-    //loop over all of our arcs
-    for(int i=0; i < size; i++){
-        //this loop checks if the arcs[i] is completely inside of the topArc
-        while(!arcStack.empty()){
-            //set topArc as the top of the stack
-            topArc = arcStack.top();
-
-
-            arcsEnd = arcs[i]->endTheta;
-            topEnd = topArc->endTheta;
-
-            //check if topArc is stradling
-            if(topArc->startTheta < topArc->endTheta){
-                //do we need to check if these are above x-axis?
-                arcsEnd -= 2*M_PI;
-                topEnd -= 2*M_PI;
-            }
-            if(arcs[i]->startTheta >= topArc->startTheta&& arcsEnd <= topEnd){ //check if the arcs[i] is completely inside of the topArc
-                //create a new arc with lable that combines the two arcs
-                //and has the same start and end as the arc that completely consumes the other
-                //set the new arc as the optimum arc for topArc
-                lable = topArc->lineNum + "," + arcs[i]->lineNum;
-                topArc->next = new arc(lable, topArc);
-            }
-            else{ //if topArc does not completely consume arcs[i] then break
-                //this break is not in the paper
-                break;
-            }
-            //pop topArc if it had its optimum arc was set
-            //if we are keeping the else break maybe this should go inside the if
-            arcStack.pop();
-        }
-
-        //this checks it topArc and arcs[i] overlap and sets a likely optimum for topArc
-        if(!arcStack.empty()){
-            //set topArc as the top of the stack
-            topArc = arcStack.top();
-
-            arcsEnd = arcs[i]->endTheta;
-            topEnd = topArc->endTheta;
-
-            //check if topArc is stradling
-            if(topArc->startTheta < topArc->endTheta){
-                //do we need to check if these are above x-axis?
-                arcsEnd -= 2*M_PI;
-                topEnd -= 2*M_PI;
-            }
-            if(arcs[i]->startTheta >= topEnd){ //check if topArc and arcs[i] overlap
-                //create a new arc with lable that combines the two arcs
-                //and has the earliest start point and the furthest end point between the two arcs
-                //set the new arc as the likely optimum arc for topArc
-                lable = topArc->lineNum + "," + arcs[i]->lineNum;
-                topArc->next = new arc(lable, topArc->startTheta, arcs[i]->endTheta);
-            }
-        }
-        //push the current arc to the stack
-        arcStack.push(arcs[i]);
-    }
-    //add all of the optimum arcs to the linegraph
-    for(int i=0; i < size; i++){
-        if(arcs[i]->next != NULL){
-            lineGraph[lineGraphSize] = arcs[i]->next;
-            lineGraphSize++;
-        }
-    }
-    //set the arc set for the graph as the linegraph
-    for(int i=0; i < lineGraphSize; i++){
-        arcs[i] = lineGraph[i];
-    }
-    size = lineGraphSize;
+    delete[] first;
+    delete[] second;
 }
