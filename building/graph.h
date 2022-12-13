@@ -25,7 +25,7 @@ class graph{
         ~graph();
         void insert(box* b);
         void addEdge(int u, int v);
-        int dfs(int i, int p);
+        void dfs(int i, int p);
         void printEdges();
         //getters
         int getNumPaths() {return numPaths;}

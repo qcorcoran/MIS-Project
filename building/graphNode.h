@@ -14,7 +14,6 @@
 #include <string>
 #include <stack>
 #include <utility>
-#include <limits>
 #include "box.h"
 
 using namespace std;
