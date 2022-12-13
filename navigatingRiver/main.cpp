@@ -20,29 +20,24 @@ using namespace std;
 int main(int argc, char** argv){
     int bestDiameter = 0;
     //struct to time the algorithm
-    //struct timespec startTime, endTime; 
+    struct timespec startTime, endTime; 
 
 	//make graph object
 	river* r = new river();
 
     //read from the input file
     r->readData();
-    cout<<"read"<<endl;
 
     //timing starts here
-    //clock_gettime(CLOCK_REALTIME, &startTime);
+    clock_gettime(CLOCK_REALTIME, &startTime);
     //sort the array using mergesort
     r->mergesort(0, r->getNumPoints()-1);
-    cout<<"sorted"<<endl;
     
     //initialize the graph nodes
     r->initGraph();
-    cout<<"graph nodes made"<<endl;
 
-    bestDiameter = r->findBestDiameter();
-    cout<<"found diameter "<<bestDiameter<<endl;
+    bestDiameter = r->findBestDiameter("opt");
 
-    /*
     //timing ends here
     clock_gettime(CLOCK_REALTIME, &endTime);
     //calculate time to run the algorithm
@@ -53,11 +48,11 @@ int main(int argc, char** argv){
     //add runtime to times file
     ofstream timeStream;
     timeStream.open("times.txt", ios_base::app);
-    timeStream<<"n="<<r->getNumPoints()<<" time="<<finalTime<<"sec\n";
+    timeStream<<"n="<<r->getNumPoints()-2<<" time="<<finalTime<<"sec\n";
     timeStream.close();
-    */
 
     //output the final result
+    cout<<bestDiameter<<endl;
 
     //deallocate the river
     delete r;

@@ -40,7 +40,7 @@ class river{
 		void merge(int start, int middle, int end);
         void initGraph();
         double distance(point* p1, point* p2);
-        int findBestDiameter();
+        int findBestDiameter(string alg);
         void buildGraph(int diameter);
         void buildGraphBrute(int diameter);
         //getters

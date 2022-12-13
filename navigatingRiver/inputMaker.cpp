@@ -16,17 +16,17 @@ using namespace std;
 
 int main(int argc, char** argv){
     //declare local variables
-    string ansfile = "answer20.txt";
-    string infile = "input20.txt";
+    string ansfile = "answer.txt";
+    string infile = "input.txt";
     ifstream myfile;
-    int numPoints = 20;
+    int numPoints = 10;
     int pointsRem = 0;
     int leftRight = 0;
-    int minX = -1;
-    int maxX = 25;
+    int minX = 0;
+    int maxX = 20;
     int minY = 0;
-    int maxY = 50;
-    int diameter = 6;
+    int maxY = 20;
+    int diameter = 10;
     int point[2];
     int leftOpen[2];
     int rightOpen[2];

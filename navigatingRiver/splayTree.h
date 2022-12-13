@@ -21,15 +21,12 @@ class splayTree{
 		void zagRotate(splayNode* pivot);
 		void splay(splayNode* x);
 		splayNode* splayMax(splayNode* r);
-		splayNode* strictMax(splayNode* r);
 		splayNode* splayMin(splayNode* r);
 		splayNode** split(splayNode* x);
 		splayNode* join(splayNode* leftSide, splayNode* rightSide);
 		void splayDelete(splayNode* x);
 		splayNode* search(int k, splayNode* r);
 		splayNode* splaySearch(int k);
-		splayNode* getSuccessor(splayNode* node);
-		splayNode* getPredecessor(splayNode* node);
 		void inorderTraversal(splayNode* n);
 		void preorderTraversal(splayNode* n);
         //getters
