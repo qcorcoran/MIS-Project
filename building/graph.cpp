@@ -5,6 +5,7 @@
 
 using namespace std;
 
+//constructor
 graph::graph(int n){
     v = n;
     numVerts = 0;
@@ -26,6 +27,7 @@ graph::graph(int n){
     }
 }
 
+//destructor
 graph::~graph(){
     for(int i=0; i < numVerts; i++){
         delete verts[i];
@@ -41,12 +43,14 @@ graph::~graph(){
     delete[] paths;
 }
 
+//insert a new graph node
 void graph::insert(box* b){
     graphNode* node = new graphNode(numVerts, b);
     verts[numVerts] = node;
     numVerts++;
 }
 
+//add an edge between nodes u and v
 void graph::addEdge(int u, int v){
     if(u == v){
         return;
@@ -57,12 +61,13 @@ void graph::addEdge(int u, int v){
     numEdges[v]++;
 }
 
+//non-recursive DFS modified to check for bridges
 void graph::dfs(int i, int p){
     int min_d[v];
     stack<pair<int, int> > stack1;
     stack<pair<int, int> > stack2;
     pair<int, int> stackPair(i, p);
-    stack1.push(stackPair); // push a tuple (i, p) STL pair
+    stack1.push(stackPair);
     while(!stack1.empty()){
         i = stack1.top().first;
         p = stack1.top().second;
@@ -88,10 +93,10 @@ void graph::dfs(int i, int p){
                 stack1.push(stackPair);
             }
         }
-        // min_d values for all neighbors of i should be computed.
-        // iterate through all neighbors j again, and check for bridges based on the min_d values.
-        // Compute and store min_d for node i
     }
+    //min_d values for all neighbors of i should be computed
+    //iterate through all neighbors j again, and check for bridges based on the min_d values
+    //compute and store min_d for node i
     while(!stack2.empty()){
         i = stack2.top().first;
         p = stack2.top().second;
@@ -106,11 +111,11 @@ void graph::dfs(int i, int p){
                 //store path and update path number
                 stringstream ssi;
                 string ipath = "";
-                ssi << i;
+                ssi << i+1;
                 ssi >> ipath;
                 stringstream ssj;
                 string jpath = "";
-                ssj << adj[i][j];
+                ssj << adj[i][j]+1;
                 ssj >> jpath;
                 paths[numPaths] = ipath + " " + jpath + "\n";
                 numPaths++;
@@ -120,6 +125,7 @@ void graph::dfs(int i, int p){
     }
 }
 
+//print all graph edges for debugging
 void graph::printEdges(){
     cout<<"printing "<<numEdges[0]<<" "<<numVerts<<endl;
     for(int i=0; i < numVerts; i++){

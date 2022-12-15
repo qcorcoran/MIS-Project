@@ -18,22 +18,20 @@ int main(int argc, char** argv){
     //struct to time the algorithm
     struct timespec startTime, endTime; 
 
-	//make graph object
+	//make neighborhood object
 	neighborhood* nb = new neighborhood();
 
     //read from the input file
     nb->readData();
 
-
     //timing starts here
     clock_gettime(CLOCK_REALTIME, &startTime);
+
     //sort the array using mergesort
     nb->mergesort(0, nb->getNumBoxes()-1);
 
-    
-    //initialize the graph nodes
+    //create the graph nodes and edges
     nb->buildGraph();
-
 
     //run modified dfs
     nb->getGraph()->dfs(0, -1);

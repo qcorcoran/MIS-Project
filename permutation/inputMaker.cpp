@@ -53,7 +53,6 @@ int main(int argc, char** argv){
     while(i < permutations){
         if(i == lisStart){
             p = lisStartVal;
-            cout<<p<<" "<<prevP<<endl;
             assert(p < prevP);
             prevP = p;
             iFile << p << "\n";
@@ -76,9 +75,7 @@ int main(int argc, char** argv){
         prevP = p;
         iFile << p << "\n";
         i++;
-    }
-
-    cout<<lisStart<<" "<<lisStartVal<<endl;    
+    } 
 
     //close the input file
     iFile.close();

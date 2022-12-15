@@ -22,7 +22,6 @@ class splayTree{
 		void updateLis(node* n);
 		void splay(node* x);
 		node* splayMax();
-		node* splayMaxLis();
 		node** split(node* x);
 		node* join(node* leftSide, node* rightSide);
 		void splayDelete(node* x);

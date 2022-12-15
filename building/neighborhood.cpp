@@ -56,6 +56,54 @@ void neighborhood::readData(){
     }
 }
 
+//checks if two buildings are intersecting
+int neighborhood::intersecting(box* b1, box* b2){
+    if((b1->r == b2->l) && (b2->b >= b1->b && b2->b <= b1->t)){
+        return 1;
+    }
+    else if((b1->r == b2->l) && (b2->t >= b1->b && b2->t <= b1->t)){
+        return 1;
+    }
+    else if((b1->t == b2->b) && (b2->l >= b1->l && b2->l <= b1->r)){
+        return 1;
+    }
+    else if((b1->t == b2->b) && (b2->r >= b1->l && b2->r <= b1->r)){
+        return 1;
+    }
+    else if((b1->b == b2->t) && (b2->l >= b1->l && b2->l <= b1->r)){
+        return 1;
+    }
+    else if((b1->b == b2->t) && (b2->r >= b1->l && b2->r <= b1->r)){
+        return 1;
+    }
+    return 0;
+}
+
+//initialize the graph nodes
+void neighborhood::initGraph(){
+    for(int i=0; i < numBoxes; i++){
+        g->insert(boxes[i]);
+    }
+}
+
+//build the graph of building intersections
+void neighborhood::buildGraph(){
+    //initalize graph nodes
+    initGraph();
+    //create graph edges
+    for(int i=0; i < numBoxes; i++){
+        for(int j=i+1; j < numBoxes; j++){
+            if(boxes[i]->r < boxes[j]->l){
+                break;
+            }
+            //add an edge if two buildings intersect
+            if(intersecting(boxes[i], boxes[j]) && i != j){
+                g->addEdge(boxes[i]->index-1, boxes[j]->index-1);
+            }
+        }
+    }
+}
+
 //recursive mergesort
 void neighborhood::mergesort(int start, int end){
     //base case
@@ -116,48 +164,4 @@ void neighborhood::merge(int start, int middle, int end){
     }
     delete[] first;
     delete[] second;
-}
-
-int neighborhood::intersecting(box* b1, box* b2){
-    if((b1->r == b2->l) && (b2->b >= b1->b && b2->b <= b1->t)){
-        return 1;
-    }
-    else if((b1->r == b2->l) && (b2->t >= b1->b && b2->t <= b1->t)){
-        return 1;
-    }
-    else if((b1->t == b2->b) && (b2->l >= b1->l && b2->l <= b1->r)){
-        return 1;
-    }
-    else if((b1->t == b2->b) && (b2->r >= b1->l && b2->r <= b1->r)){
-        return 1;
-    }
-    else if((b1->b == b2->t) && (b2->l >= b1->l && b2->l <= b1->r)){
-        return 1;
-    }
-    else if((b1->b == b2->t) && (b2->r >= b1->l && b2->r <= b1->r)){
-        return 1;
-    }
-    return 0;
-}
-
-void neighborhood::initGraph(){
-    for(int i=0; i < numBoxes; i++){
-        g->insert(boxes[i]);
-    }
-}
-
-void neighborhood::buildGraph(){
-    //initalize graph nodes
-    initGraph();
-    //create graph edges
-    for(int i=0; i < numBoxes; i++){
-        for(int j=i+1; j < numBoxes; j++){
-            if(boxes[i]->r < boxes[j]->l){
-                break;
-            }
-            if(intersecting(boxes[i], boxes[j]) && i != j){
-                g->addEdge(boxes[i]->index-1, boxes[j]->index-1);
-            }
-        }
-    }
 }

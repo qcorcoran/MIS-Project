@@ -22,7 +22,7 @@ int main(int argc, char** argv){
     //struct to time the algorithm
     struct timespec startTime, endTime; 
 
-	//make graph object
+	//make river object
 	river* r = new river();
 
     //read from the input file
@@ -30,12 +30,14 @@ int main(int argc, char** argv){
 
     //timing starts here
     clock_gettime(CLOCK_REALTIME, &startTime);
+
     //sort the array using mergesort
     r->mergesort(0, r->getNumPoints()-1);
     
     //initialize the graph nodes
     r->initGraph();
 
+    //run optimized algorithm and store the best diameter
     bestDiameter = r->findBestDiameter("opt");
 
     //timing ends here

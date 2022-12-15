@@ -20,8 +20,6 @@ class permutationGraph{
 		permutationGraph() {n=0; size = 0; misSize = 0; splay = new splayTree();} //Start with an empty graph
 		~permutationGraph();
 		void readData();
-		void mergesort(int start, int end);
-		void merge(int start, int middle, int end);
 		void sweepLine();
 		//getters
 		int getMisSize() {return misSize;}

@@ -12,7 +12,7 @@ river::~river(){
     delete g;
 }
 
-//read from an input file
+//read from an input file and create the river and its obstacles
 void river::readData(){
     //declare local variables
     string input = "";
@@ -69,6 +69,135 @@ void river::readData(){
     p = new point(b, d);
     points[numPoints] = p;
     numPoints++;
+}
+
+//initialize the graph nodes
+void river::initGraph(){
+    for(int i=0; i < numPoints; i++){
+        g->insert(points[i]);
+    }
+}
+
+//calculate euclidian distance
+double river::distance(point* p1, point* p2){
+    int x1 = p1->getX();
+    int y1 = p1->getY();
+    int x2 = p2->getX();
+    int y2 = p2->getY();
+    double distance = (pow((pow((x2 - x1), 2) + pow((y2 - y1), 2)), 0.5));
+    return distance;
+}
+
+//binary search on the best diameter by repeatedly building the graph and using DFS
+int river::findBestDiameter(string alg){
+    int bestDiameter = 0;
+    int tryDiameter;
+    int l = 0;
+    int r = maxDiameter;
+    //binary search on the best diameter
+    while(l <= r){
+        tryDiameter = (l + r) / 2;
+        if(alg == "opt"){ //run optimal algorithm
+            buildGraph(tryDiameter);
+        }
+        else{ //run bruteforce algorithm
+            buildGraphBrute(tryDiameter);
+        }
+        //if DFS made it from the left wall to the right wall then the diameter is invalid
+        if(g->getVisited(g->getNumVerts()-1)){
+            r = tryDiameter - 1;
+        }
+        //else the diameter is a potential best diameter
+        else{
+            bestDiameter = tryDiameter;
+            l = tryDiameter + 1;
+        }
+    }
+    //return final result
+    return bestDiameter;
+}
+
+//construct the graph using the input diameter
+void river::buildGraph(int diameter){
+    //reset the graph edges and nodes visited
+    g->reset();
+    //create an empty splay tree
+    splayTree* splay = new splayTree();
+    //start at the first obstacle to the right of the left wall
+    int i = 1;
+    splayNode* r;
+    splayNode* inode = new splayNode(points[i], i);
+    splayNode* jnode;
+    //check walls on i
+    if((points[i]->getX() - a) < diameter){
+        g->addEdge(0, i);
+    }
+    if((b - points[i]->getX()) < diameter){
+        g->addEdge(n+1, i);
+    }
+    splay->splayInsert(inode, splay->getRoot());
+    for(int j=i+1; j <= n; j++){
+        //advance i
+        while((points[j]->getX() - points[i]->getX()) > diameter){
+            splay->splayDelete(inode);
+            i++;
+            inode = new splayNode(points[i], i);
+            splay->splayInsert(inode, splay->getRoot());
+        }
+        jnode = new splayNode(points[j], j);
+        splay->splayInsert(jnode, splay->getRoot());
+        r = splay->splayMin(jnode->getRightChild());
+        while(r != NULL && (r->getKey() - points[j]->getY()) <= diameter){
+            if(distance(r->getPoint(), points[j]) < diameter){
+                g->addEdge(r->getIndex(), j);
+            }
+            r = splay->splayMin(r->getRightChild());
+        }
+        r = splay->splayMax(jnode->getLeftChild());
+        while(r != NULL && (points[j]->getY() - r->getKey()) <= diameter){
+            if(distance(r->getPoint(), points[j]) < diameter){
+                g->addEdge(r->getIndex(), j);
+            }
+            r = splay->splayMax(r->getLeftChild());
+            if(r != NULL){
+                splay->splay(r);
+            }
+        }
+        //check walls
+        if((points[j]->getX() - a) < diameter){
+            g->addEdge(0, j);
+        }
+        if((b - points[j]->getX()) < diameter){
+            g->addEdge(n+1, j);
+        }
+    }
+    //dfs to check for a path from the left wall node to the right wall node
+    g->dfs(0);
+    delete splay;
+}
+
+//bruteforce graph building algorithm
+void river::buildGraphBrute(int diameter){
+    //reset the graph edges and nodes visited
+    g->reset();
+    //check every point against every point
+    for(int i=1; i <= n; i++){
+        //check walls on i
+        if((points[i]->getX() - a) < diameter){
+            g->addEdge(0, i);
+        }
+        if((b - points[i]->getX()) < diameter){
+            g->addEdge(n+1, i);
+        }
+        //check points
+        for(int j=i+1; j <= n; j++){
+            if(distance(points[i], points[j]) < diameter){
+                g->addEdge(i, j);
+            }
+        }
+    }
+    //dfs to check for a path from the left wall node to the right wall node
+    g->dfs(0);
 }
 
 //recursive mergesort
@@ -131,119 +260,4 @@ void river::merge(int start, int middle, int end){
     }
     delete[] first;
     delete[] second;
-}
-
-void river::initGraph(){
-    for(int i=0; i < numPoints; i++){
-        g->insert(points[i]);
-    }
-}
-
-double river::distance(point* p1, point* p2){
-    int x1 = p1->getX();
-    int y1 = p1->getY();
-    int x2 = p2->getX();
-    int y2 = p2->getY();
-    double distance = (pow((pow((x2 - x1), 2) + pow((y2 - y1), 2)), 0.5));
-    return distance;
-}
-
-int river::findBestDiameter(string alg){
-    int bestDiameter = 0;
-    int tryDiameter;
-    int l = 0;
-    int r = maxDiameter;
-    while(l <= r){
-        tryDiameter = (l + r) / 2;
-        if(alg == "opt"){
-            buildGraph(tryDiameter);
-        }
-        else{
-            buildGraphBrute(tryDiameter);
-        }
-        if(g->getVisited(g->getNumVerts()-1)){
-            r = tryDiameter - 1;
-        }
-        else{
-            bestDiameter = tryDiameter;
-            l = tryDiameter + 1;
-        }
-    }
-    return bestDiameter;
-}
-
-void river::buildGraph(int diameter){
-    g->reset();
-    splayTree* splay = new splayTree();
-    int i = 1;
-    splayNode* r;
-    splayNode* inode = new splayNode(points[i], i);
-    splayNode* jnode;
-    //check walls on i
-    if((points[i]->getX() - a) < diameter){
-        g->addEdge(0, i);
-    }
-    if((b - points[i]->getX()) < diameter){
-        g->addEdge(n+1, i);
-    }
-    splay->splayInsert(inode, splay->getRoot());
-    for(int j=i+1; j <= n; j++){
-        //advance i
-        while((points[j]->getX() - points[i]->getX()) > diameter){
-            splay->splayDelete(inode);
-            i++;
-            inode = new splayNode(points[i], i);
-            splay->splayInsert(inode, splay->getRoot());
-        }
-        jnode = new splayNode(points[j], j);
-        splay->splayInsert(jnode, splay->getRoot());
-        r = splay->splayMin(jnode->getRightChild());
-        while(r != NULL && (r->getKey() - points[j]->getY()) <= diameter){
-            if(distance(r->getPoint(), points[j]) < diameter){
-                g->addEdge(r->getIndex(), j);
-            }
-            r = splay->splayMin(r->getRightChild());
-        }
-        r = splay->splayMax(jnode->getLeftChild());
-        while(r != NULL && (points[j]->getY() - r->getKey()) <= diameter){
-            if(distance(r->getPoint(), points[j]) < diameter){
-                g->addEdge(r->getIndex(), j);
-            }
-            r = splay->splayMax(r->getLeftChild());
-            if(r != NULL){
-                splay->splay(r);
-            }
-        }
-        //check walls
-        if((points[j]->getX() - a) < diameter){
-            g->addEdge(0, j);
-        }
-        if((b - points[j]->getX()) < diameter){
-            g->addEdge(n+1, j);
-        }
-    }
-    //dfs to check for a path from the left wall node to the right wall node
-    g->dfs(0);
-    delete splay;
-}
-
-void river::buildGraphBrute(int diameter){
-    g->reset();
-    for(int i=1; i <= n; i++){
-        //check walls on i
-        if((points[i]->getX() - a) < diameter){
-            g->addEdge(0, i);
-        }
-        if((b - points[i]->getX()) < diameter){
-            g->addEdge(n+1, i);
-        }
-        //check points
-        for(int j=i+1; j <= n; j++){
-            if(distance(points[i], points[j]) < diameter){
-                g->addEdge(i, j);
-            }
-        }
-    }
-    //dfs to check for a path from the left wall node to the right wall node
-    g->dfs(0);
 }

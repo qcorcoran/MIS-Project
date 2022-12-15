@@ -27,6 +27,11 @@ int main(int argc, char** argv){
 
     //timing starts here
     clock_gettime(CLOCK_REALTIME, &startTime);
+
+    //transform trapezoids into their box representation
+    g->transformToBoxes();
+
+    //sort all box points on x
     g->mergesort(0, g->getBoxesSize()-1);
 
     //runs the sweepline across the box representation

@@ -5,6 +5,7 @@
 
 using namespace std;
 
+//destructor
 splayTree::~splayTree(){
     /*
     while(root != NULL){
@@ -13,35 +14,36 @@ splayTree::~splayTree(){
     */
 }
 
+//recursive insert
 void splayTree::insert(node* n, node* current){
+    //if the tree is empty set the inserted node as the root
     if(root == NULL){
         root = n;
         return;
     }
-    while(1){
-        if(n->key < current->key){
-            //traverseLeft
-            if(current->leftChild == NULL){
-                current->setLeftChild(n);
-                return;
-            }
-            else{
-                current = current->leftChild;
-            }
+    if(n->key < current->key){
+        //traverseLeft
+        if(current->leftChild == NULL){
+            current->setLeftChild(n);
         }
         else{
-            //traverseRight
-            if(current->rightChild == NULL){
-                current->setRightChild(n);
-                return;
-            }
-            else{
-                current = current->rightChild;
-            }
+            //recursive call
+            insert(n, current->leftChild);
+        }
+    }
+    else{
+        //traverseRight
+        if(current->rightChild == NULL){
+            current->setRightChild(n);
+        }
+        else{
+            //recursive call
+            insert(n, current->rightChild);
         }
     }
 }
 
+//calls recursive insert and then splays the inserted node to the root
 void splayTree::splayInsert(node* n, node* r){
     insert(n, r);
     size++;
@@ -124,6 +126,7 @@ void splayTree::zagRotate(node* pivot){
     }
 }
 
+//update the LIS for the node n
 void splayTree::updateLis(node* n){
     n->perm->lisMax = max(n->perm->lis, n->perm->lisMax);
     if(n->rightChild != NULL && n->leftChild != NULL){
@@ -138,6 +141,7 @@ void splayTree::updateLis(node* n){
     }
 }
 
+//move node x to the root while maintaining binary search property
 void splayTree::splay(node* x){
     while(x->parent != NULL){
         if(root->leftChild == x){ //zig rotation
@@ -163,9 +167,11 @@ void splayTree::splay(node* x){
             zigRotate(x->parent);
         }
     }
+    //set x as the new root
     root = x;
 }
 
+//move the max value in the tree to the root
 node* splayTree::splayMax(){  
     //loop down to the rightmost leaf
     node* current = root;
@@ -176,16 +182,10 @@ node* splayTree::splayMax(){
     return current;
 }
 
-node* splayTree::splayMaxLis(){  
-    //loop down to the rightmost leaf
-    node* current = root;
-    while(current->rightChild != NULL){
-        current = current->rightChild;
-    }
-    splay(current);
-    return current;
-}
-
+//split the tree into two seperate trees
+//node x will be the root of the left tree
+//and the right child of x will be the root of the right tree
+//split is used for delete
 node** splayTree::split(node* x){
     static node* leftRight[2];
     node* rightSide = NULL;
@@ -202,6 +202,8 @@ node** splayTree::split(node* x){
     return leftRight;
 }
 
+//joins two trees together into one tree
+//join is used for delete
 node* splayTree::join(node* leftSide, node* rightSide){
     if(leftSide == NULL){
         return rightSide;
@@ -215,33 +217,45 @@ node* splayTree::join(node* leftSide, node* rightSide){
     return x;
 }
 
+//deletes node x from the tree
 void splayTree::splayDelete(node* x){
+    //split the tree on x
     node** s = split(x);
     if(s[0]->leftChild != NULL){
+        //set the left child of x as the root of the left tree
+        //since x was previously the root this effectively deletes x
         s[0]->leftChild->parent = NULL;
         root = s[0]->leftChild;
     }
+    //rejoin the two halves of the tree now without x
     join(s[0]->leftChild, s[1]);
+    //decrement the size of the tree
     size--;
+    //if x was the last node in the tree set root to NULL
     if(root == x){
         root = NULL;
     }
+    //free up x from memory
     delete x;
 }
 
+//recursively searches the tree for the given key and returns the node
 node* splayTree::search(int k, node* r){
     if(r->key == k){
         return r;
     }
     else if(r->key < k){
+        //recursive call
         search(k, r->leftChild);
     }
     else{
+        //recursive call
         search(k, r->rightChild);
     }
     return r;
 }
 
+//calls recursive search on key k and then moves the returned node to the root
 node* splayTree::splaySearch(int k){
     node* x = search(k, root);
     if(x != NULL){
@@ -250,6 +264,7 @@ node* splayTree::splaySearch(int k){
     return x;
 }
 
+//returns the successor node of the node with the key k
 node* splayTree::getSuccessor(int k){
     node* current = root;
     if (current == NULL){
@@ -281,6 +296,7 @@ node* splayTree::getSuccessor(int k){
     return successor;
 }
 
+//inoder traversal function for debugging
 void splayTree::inorderTraversal(node* n){
     if(n == NULL){
         return;
@@ -296,6 +312,7 @@ void splayTree::inorderTraversal(node* n){
     inorderTraversal(n->rightChild);
 }
 
+//preorder traversal function for debugging
 void splayTree::preorderTraversal(node* n){
     if (n == NULL)
         return;

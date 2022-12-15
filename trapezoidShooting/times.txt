@@ -155,3 +155,8 @@ n=100000 time=0.170469sec
 n=10000 time=0.0174299sec
 n=1000 time=0.00159358sec
 n=5 time=9.868e-06sec
+n=1000000 time=0.928164sec
+n=5 time=9.838e-06sec
+n=5 time=1.0412e-05sec
+n=1000000 time=0.789295sec
+n=1000000 time=0.857574sec

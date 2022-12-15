@@ -18,6 +18,7 @@ trapezoidGraph::~trapezoidGraph(){
     delete splay;
 }
 
+//read from an input file and create the trapezoids
 void trapezoidGraph::readData(){
     //declare local variables
     string input = "";
@@ -57,14 +58,76 @@ void trapezoidGraph::readData(){
         //insert the trapezoid into the trapezoids array
         trapezoids[size] = trap;
         size++;
-        //insert the box representation into the boxes array
-        boxes[boxesSize] = new point(trap->bottomLeft[0], trap->bottomLeft[1], trap);
-        boxesSize++;
-        boxes[boxesSize] = new point(trap->topRight[0], trap->topRight[1], trap);
-        boxesSize++;
         //increment the line number
         i++;
     }
+}
+
+//fills in the boxes array with the points from the box representation of the trapezoids
+void trapezoidGraph::transformToBoxes(){
+    for(int i=0; i < size; i++){
+        //insert the box representation into the boxes array
+        boxes[boxesSize] = new point(trapezoids[i]->bottomLeft[0], trapezoids[i]->bottomLeft[1], trapezoids[i]);
+        boxesSize++;
+        boxes[boxesSize] = new point(trapezoids[i]->topRight[0], trapezoids[i]->topRight[1], trapezoids[i]);
+        boxesSize++;
+    }
+}
+
+//checks if the point is a bottom left point
+int trapezoidGraph::checkLeft(trapezoid* trap, point* p){
+    if(trap->bottomLeft[0] == p->getX() && trap->bottomLeft[1] == p->getY()){
+        return 1;
+    }
+    return 0;
+}
+
+//checks if the point is a top right point
+int trapezoidGraph::checkRight(trapezoid* trap, point* p){
+    if(trap->topRight[0] == p->getX() && trap->topRight[1] == p->getY()){
+        return 1;
+    }
+    return 0;
+}
+
+//runs a sweepline on all of the box points and utilizes a splay tree to compute the MIS
+void trapezoidGraph::sweepLine(){
+    trapezoid* trap;
+    point* p;
+    node* successor;
+    int sucLisMax;
+    //run a sweep line on all the box points
+    for(int i=0; i < boxesSize; i++){
+        p = boxes[i];
+        trap = p->getTrap();
+        //if bottom left point query the splay tree for successor
+        if(checkLeft(trap, p)){
+            successor = splay->getSuccessor(p->getY());
+            if(successor != NULL){
+                splay->splay(successor);
+                sucLisMax = splay->getRoot()->getTrapezoid()->lisMax;
+                trap->lisMax = sucLisMax;
+                if(successor->getLeftChild() != NULL){
+                    trap->lis = successor->getLeftChild()->getTrapezoid()->lis + 1;
+                }
+            }
+            else if(splay->getRoot() != NULL){
+                successor = splay->splayMax();
+                if(successor->getLeftChild() != NULL){
+                    trap->lis = max(successor->getLeftChild()->getTrapezoid()->lisMax, successor->getTrapezoid()->lis) + 1;
+                }
+                else{
+                    trap->lis = successor->getTrapezoid()->lis + 1;
+                }
+            }
+        }
+        //if top right point insert into the splay tree
+        else if(checkRight(trap, p)){
+            splay->splayInsert(new node(trap), splay->getRoot());
+        }
+    }
+    //set the MIS at the end
+    misSize = splay->getRoot()->getTrapezoid()->lisMax;
 }
 
 //recursive mergesort
@@ -127,54 +190,4 @@ void trapezoidGraph::merge(int start, int middle, int end){
     }
     delete[] first;
     delete[] second;
-}
-
-int trapezoidGraph::checkLeft(trapezoid* trap, point* p){
-    if(trap->bottomLeft[0] == p->getX() && trap->bottomLeft[1] == p->getY()){
-        return 1;
-    }
-    return 0;
-}
-
-int trapezoidGraph::checkRight(trapezoid* trap, point* p){
-    if(trap->topRight[0] == p->getX() && trap->topRight[1] == p->getY()){
-        return 1;
-    }
-    return 0;
-}
-
-void trapezoidGraph::sweepLine(){
-    trapezoid* trap;
-    point* p;
-    node* successor;
-    int sucLisMax;
-    for(int i=0; i < boxesSize; i++){
-        p = boxes[i];
-        trap = p->getTrap();
-        if(checkLeft(trap, p)){
-            successor = splay->getSuccessor(p->getY());
-            if(successor != NULL){
-                splay->splay(successor);
-                sucLisMax = splay->getRoot()->getTrapezoid()->lisMax;
-                trap->lisMax = sucLisMax;
-                if(successor->getLeftChild() != NULL){
-                    trap->lis = successor->getLeftChild()->getTrapezoid()->lis + 1;
-                }
-            }
-            else if(splay->getRoot() != NULL){
-                successor = splay->splayMax();
-                if(successor->getLeftChild() != NULL){
-                    trap->lis = max(successor->getLeftChild()->getTrapezoid()->lisMax, successor->getTrapezoid()->lis) + 1;
-                }
-                else{
-                    trap->lis = successor->getTrapezoid()->lis + 1;
-                }
-            }
-        }
-        else if(checkRight(trap, p)){
-            splay->splayInsert(new node(trap), splay->getRoot());
-        }
-    }
-    
-    misSize = splay->getRoot()->getTrapezoid()->lisMax;
 }

@@ -25,8 +25,10 @@ int main(int argc, char** argv){
 
     //timing starts here
     clock_gettime(CLOCK_REALTIME, &startTime);
+
     //this runs the MIS algorithm
     t->postorderSearch(t->getRoot(), "MIS");
+    
     //timing ends here
     clock_gettime(CLOCK_REALTIME, &endTime);
     //calculate time to run the algorithm

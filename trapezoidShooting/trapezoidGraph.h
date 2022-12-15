@@ -23,11 +23,12 @@ class trapezoidGraph{
 		trapezoidGraph() {n = 0; size = 0; misSize = 0; boxesSize = 0; splay = new splayTree();} //Start with an empty graph
 		~trapezoidGraph();
 		void readData();
-		void mergesort(int start, int end);
-		void merge(int start, int middle, int end);
+		void transformToBoxes();
 		int checkLeft(trapezoid* trap, point* p);
 		int checkRight(trapezoid* trap, point* p);
 		void sweepLine();
+		void mergesort(int start, int end);
+		void merge(int start, int middle, int end);
 		//getters
 		int getMisSize() {return misSize;}
 		int getSize() {return size;}

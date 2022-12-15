@@ -26,3 +26,11 @@ n=1000000 time=0.446479sec
 n=8 time=5.507e-06sec
 n=1000000 time=0.912855sec
 n=8 time=0.0137982sec
+n=8 time=5.329e-06sec
+n=10 time=6.047e-06sec
+n=20 time=1.0392e-05sec
+n=100 time=4.6156e-05sec
+n=1000 time=0.000483549sec
+n=10000 time=0.00588963sec
+n=100000 time=0.0590981sec
+n=1000000 time=0.678705sec

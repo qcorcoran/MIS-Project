@@ -32,3 +32,14 @@ n=6 time=0.000154874sec
 n=6 time=9.6143e-05sec
 n=100000 time=0.198921sec
 n=1000000 time=2.60249sec
+n=10000 time=0.0246405sec
+n=5 time=1.7621e-05sec
+n=5 time=2.0724e-05sec
+n=5 time=8.8231e-05sec
+n=5 time=0.000112567sec
+n=6 time=0.000118649sec
+n=5 time=0.000119451sec
+n=5 time=0.00011894sec
+n=5 time=0.000243223sec
+n=5 time=0.000146982sec
+n=5 time=0.000116267sec

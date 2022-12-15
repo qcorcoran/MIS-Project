@@ -29,11 +29,11 @@ class neighborhood{
         neighborhood() {n = 0; numBoxes = 0;};
         ~neighborhood();
         void readData();
-        void mergesort(int start, int end);
-		void merge(int start, int middle, int end);
         int intersecting(box* b1, box* b2);
         void initGraph();
         void buildGraph();
+        void mergesort(int start, int end);
+		void merge(int start, int middle, int end);
         //getters
         int getNumBoxes() {return numBoxes;}
         graph* getGraph() {return g;}

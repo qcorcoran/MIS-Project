@@ -22,6 +22,7 @@ class intervalGraph{
 		int conflictCheck(int index);
 		void mergesort(int start, int end);
 		void merge(int start, int middle, int end);
+		//getters
 		int getSize() {return size;}
 		int getMisSize() {return misSize;}
 };

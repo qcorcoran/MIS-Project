@@ -206,6 +206,7 @@ void tree::merge(int start, int middle, int end, string job){
     }
 }
 
+//starts bruteforce algorithm
 void tree::bruteForce(){
     brute = new node*[n];
     postorderSearch(root, "brute");
@@ -218,13 +219,17 @@ void tree::bruteForce(){
     return;
 }
 
+//finds and checks all subsets of the tree
 void tree::findSubsets(node* subset[], int subsetSize, int index){
     if(index < 0){
+        //if subset is larger than the current best MIS check if it is a valid MIS
         if(subsetSize > misSize){
             if(validate(subset, subsetSize)){
                 for(int i=0; i < subsetSize; i++){
+                    //add the labels of the new best MIS to the array
                     mis[i] = subset[i]->label;
                 }
+                //update MIS if subset is valid
                 misSize = subsetSize;
             }
         }
@@ -239,9 +244,11 @@ void tree::findSubsets(node* subset[], int subsetSize, int index){
     findSubsets(subset, subsetSize, index-1);
 }
 
+//checks if a subset is a valid MIS
 int tree::validate(node* arry[], int arrySize){
     for(int i=0; i < arrySize; i++){
         for(int j=0; j < arrySize; j++){
+            //if subset contains any parent child pairs then it is not a valid MIS
             if(arry[i]->parent == arry[j]){
                 return 0;
             }

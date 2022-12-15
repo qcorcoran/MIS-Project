@@ -14,6 +14,7 @@ permutationGraph::~permutationGraph(){
     delete splay;
 }
 
+//read from an input file and create the permutations
 void permutationGraph::readData(){
     //declare local variables
     string input = "";
@@ -45,6 +46,7 @@ void permutationGraph::readData(){
     }
 }
 
+//runs a sweepline on all of the permutations and utilizes a splay tree to compute the MIS
 void permutationGraph::sweepLine(){
     permutation* perm;
     //iterate over the set of permutations
@@ -58,19 +60,14 @@ void permutationGraph::sweepLine(){
         if(permNode->getLeftChild() != NULL && permNode->getRightChild() != NULL){
             perm->lis = permNode->getLeftChild()->getPermutation()->lisMax + 1;
             perm->lisMax = max(perm->lis, permNode->getRightChild()->getPermutation()->lisMax);
-            cout<<"if1 "<<perm->pValue<<" "<<perm->lisMax<<" "<<perm->lis<<endl;
-            cout<<"leftChild "<<permNode->getLeftChild()->getPermutation()->pValue<<" "<<permNode->getLeftChild()->getPermutation()->lisMax<<endl;
-            cout<<"rightChild "<<permNode->getRightChild()->getPermutation()->pValue<<endl;
         }
         else if(permNode->getLeftChild() != NULL){
             perm->lis = permNode->getLeftChild()->getPermutation()->lisMax + 1;
-            cout<<"if2 "<<perm->pValue<<" "<<perm->lisMax<<" "<<perm->lis<<endl;
         }
         else if(permNode->getRightChild() != NULL){
             perm->lisMax = max(perm->lis, permNode->getRightChild()->getPermutation()->lisMax);
-            cout<<"if3 "<<perm->pValue<<" "<<perm->lisMax<<" "<<perm->lis<<endl;
         }
     }
-    //get the final result
+    //set the MIS at the end
     misSize = splay->getRoot()->getPermutation()->lisMax;
 }
