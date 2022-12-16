@@ -15,8 +15,8 @@ using namespace std;
 
 int main(int argc, char** argv){
     //declare local variables
-    string ansfile = "answer.txt";
     string infile = "input.txt";
+    string ansfile = "answer.txt";
     ifstream myfile;
     int permutations = 0;
     int lis = 0;
@@ -26,13 +26,16 @@ int main(int argc, char** argv){
     int prevP = 0;
 
     //initialize random seed
-    srand(time(NULL));
+    //srand(time(NULL));
+    srand(0);
 
     //prompt user for input
+    /*
     cout<<"Enter name of input file to create: ";
     cin>>infile;
     cout<<"Enter name of answer file to create: ";
     cin>>ansfile;
+    */
     cout<<"Enter number of permutations to create: ";
     cin>>permutations;
 
@@ -84,7 +87,7 @@ int main(int argc, char** argv){
     ofstream aFile(ansfile.c_str());
 
     //write the solution to the answer file
-    aFile << lis << "\n";
+    aFile << lis+1 << "\n";
 
     //close the answer file
     aFile.close();

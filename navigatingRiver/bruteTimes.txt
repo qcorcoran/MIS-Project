@@ -23,3 +23,7 @@ n=6 time=0.00135792sec
 n=1000 time=0.725591sec
 n=100 time=0.00863293sec
 n=10000 time=34.8638sec
+n=6 time=7.178e-05sec
+n=20 time=0.000339227sec
+n=50 time=0.00193755sec
+n=19 time=0.000367289sec

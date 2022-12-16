@@ -4,3 +4,12 @@ n=50 time=0.00233573sec
 n=1000 time=1.49118sec
 n=100 time=0.0127052sec
 n=10000 time=50.0678sec
+n=6 time=0.000104433sec
+n=20 time=0.000441575sec
+n=50 time=0.00232878sec
+n=100 time=0.0124628sec
+n=1000 time=1.38414sec
+n=10000 time=50.9143sec
+n=19 time=0.000744599sec
+n=3000 time=3.16922sec
+n=1000 time=1.52497sec

@@ -10,9 +10,10 @@ CFLAGS = -c -g -Wall
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
 
-all: main.o river.o graph.o splayTree.o bruteForce.o inputMaker.o verify.o
+all: main.o river.o graph.o splayTree.o bruteForce.o inputMakerAns.o inputMaker.o verify.o
 	$(CC) -o navigatingRiver main.o river.o graph.o splayTree.o
 	$(CC) -o bruteForce bruteForce.o river.o graph.o splayTree.o
+	$(CC) -o inputMakerAns inputMakerAns.o
 	$(CC) -o inputMaker inputMaker.o
 	$(CC) -o verify verify.o
 
@@ -32,6 +33,11 @@ bruteForce: bruteForce.o river.o graph.o splayTree.o
 
 bruteForce.o: bruteForce.cpp
 
+inputMakerAns: inputMakerAns.o
+	$(CC) -o inputMakerAns inputMakerAns.o
+
+inputMakerAns.o: inputMakerAns.cpp
+
 inputMaker: inputMaker.o
 	$(CC) -o inputMaker inputMaker.o
 
@@ -43,4 +49,4 @@ verify: verify.o
 verify.o: verify.cpp
 
 clean:
-	rm -f *.o navigatingRiver bruteForce inputMaker verify
+	rm -f *.o navigatingRiver bruteForce inputMakerAns inputMaker verify

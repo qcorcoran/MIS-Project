@@ -32,7 +32,7 @@ class arc{
 		int visited;
 		arc* next;
 	public:
-		arc(string num, int a, int b, int c) {lineNum = num; ai = a; bi = b; ci = c; visited = 0; next = NULL;}
+		arc(string num, double a, double b, double c) {lineNum = num; ai = a; bi = b; ci = c; visited = 0; next = NULL;}
 		void setIntersect1(double x, double y) {intersect1[0] = x; intersect1[1] = y;} 
 		void setIntersect2(double x, double y) {intersect2[0] = x; intersect2[1] = y;}
 		void setCrossProduct() {crossProduct = (intersect1[0] * intersect2[1]) - (intersect1[1] * intersect2[0]);}

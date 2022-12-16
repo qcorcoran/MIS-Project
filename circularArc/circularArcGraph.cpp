@@ -18,9 +18,9 @@ void circularArcGraph::readData(){
     string input = "";
     stringstream ssi;
     //line attributes
-    int a = 0;
-    int b = 0;
-    int c = 0;
+    double a = 0;
+    double b = 0;
+    double c = 0;
     int i = 1;
 
     //read first line of input should be number of nodes followed by the center cordinates and the radius
@@ -70,19 +70,19 @@ void circularArcGraph::intersection(arc* ark){
     //get slope intercept form
     double slope = ark->ai / (ark->bi*-1);
     double yinter = ark->ci / (ark->bi*-1);
-
+    
     //get A, B, and C for quadratic form
     double a = 1 + pow(slope, 2);
     double b = 2 * (slope*yinter - slope*yc - xc);
     double c = pow(yc, 2) - pow(radius, 2) + pow(xc, 2) - 2*yinter*yc + pow(yinter, 2);
 
     //quadratic equation
-    double x1 = (-b + sqrt(pow(b, 2) - 4 * a * c)) / (2 * a);
-    double x2 = (-b - sqrt(pow(b, 2) - 4 * a * c)) / (2 * a);
+    double x1 = (-b + sqrt(abs(pow(b, 2) - 4 * a * c))) / (2 * a);
+    double x2 = (-b - sqrt(abs(pow(b, 2) - 4 * a * c))) / (2 * a);
 
     //plug in x values for y
     double y1 = slope * x1 + yinter;
-    double y2 = slope * x2 + yinter;
+    double y2 = slope * x2 + yinter;    
 
     //set the intersection points
     ark->setIntersect1(x1, y1);
@@ -103,6 +103,14 @@ void circularArcGraph::intersection(arc* ark){
 
 //check if two arcs are overlapping
 int circularArcGraph::overlapping(arc* i, arc* j){
+    if((i->endTheta < M_PI) && (j->startTheta > M_PI)){
+        if(j->endTheta < i->startTheta){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
     if((j->startTheta < j->endTheta) && (i->endTheta > M_PI)){
         return 1;
     }

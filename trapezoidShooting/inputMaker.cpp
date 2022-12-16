@@ -15,8 +15,8 @@ using namespace std;
 
 int main(int argc, char** argv){
     //declare local variables
-    string ansfile = "answer.txt";
     string infile = "input.txt";
+    string ansfile = "answer.txt";
     ifstream myfile;
     int trapezoids = 0;
     int sets = 0;
@@ -34,13 +34,16 @@ int main(int argc, char** argv){
     int zi = 0;
 
     //initialize random seed
-    srand(time(NULL));
+    //srand(time(NULL));
+    srand(0);
 
     //prompt user for input
+    /*
     cout<<"Enter name of input file to create: ";
     cin>>infile;
     cout<<"Enter name of answer file to create: ";
     cin>>ansfile;
+    */
     cout<<"Enter number of trapezoids to create: ";
     cin>>trapezoids;
 
